@@ -6,19 +6,19 @@ to have multiple servers with relatively small storage capacity each in clusters
 than having one expensive large server.
 
 \subsubsection{The frameworks}
-The main basis of existing frameworks is based on the Google File System[1]. The
+The main basis of existing frameworks is based on the Google File System\cite{Grem03}. The
 Google File System or GFS is the system that is used within Google to handle all
 the Big data needs in the company. The architecture behind it is that all data that
 is uploaded to the cluster is split up into chunks, which are then split over the
 'chunk servers' in the node, and replicated a set number of times (usually 3) in
 order to guarantee that data is not lost when a server/storage device breaks. The
 data on the chunk servers can then be accessed by a user who contacts the master,
-which knows exactly where each chunk is saved.[1] The Data and workflow is described
+which knows exactly where each chunk is saved.\cite{Grem03} The Data and workflow is described
 in figure \ref{GFS_Architecture} below.
 
 \begin{figure}
   \includegraphics[scale=0.5]{GFS_Architecture.png}
-  \caption{Google File System architecture[1]}
+  \caption{Google File System architecture\cite{Grem03}}
   \label{GFS_Architecture}
 \end{figure}
 
@@ -39,7 +39,7 @@ below.
 The storage framework highlighted above, is one of the most important basis of common implementations used today,
 these implementations are the are frameworks such as Mapreduce and the Apache Spark engine.
 
-\subsubsubsection{Map-reduce}
+\subsubsection{Map-reduce}
 Map reduce is a new framework for processing data developed by Google[3] in order
 to process data in a distributed setting, the basis behind this is that first all
 data is split into tuples (called key value pairs) in the map phase, which are then passed to the reduce
@@ -66,7 +66,7 @@ that all map-reduce task are so similar to BSP tasks that, becuase BSP has a mor
 basis, all tasks should be modelled as BSP tasks but implemented using the Map-reduce framework
 in order to gain the speed of Map-reduce but the correctness of BSP[5].
 
-\subsubsubsection{Apache Spark}
+\subsubsection{Apache Spark}
 Like Map-reduce Apache Spark is another built upon the ability to run programs
 on a distributed dataset. Spark is a machine learning engine that is capable of
 running fully in memory[7], this has the advantage that it is a lot faster than
@@ -96,7 +96,6 @@ and so be a Directed Acyclic Graph (DAG) or else data cannot be recovered.
 
 
 
-[1]https://static.googleusercontent.com/media/research.google.com/en//archive/gfs-sosp2003.pdf %GFS Papers
 [2]http://storageconference.us/2010/Papers/MSST/Shvachko.pdf %HDFS paper
 [3]https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf %mapreduce paper
 [4]https://arxiv.org/pdf/1101.1902v1.pdf %all bsp can be run as a map reduce problem
