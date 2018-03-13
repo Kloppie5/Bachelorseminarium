@@ -1,0 +1,92 @@
+\subsubsection{Domain-specific implementations}
+
+With the rising popularity of applied machine learning in many industries, a variety of domain-specific frameworks have been developed that have distribution models tailored towards ML. In this section, we analyze properties of the most popular implementations.
+
+\paragraph{Distributed ensemble learning}
+Many frameworks already exist for the development of machine learning models. However, they often have limited support for distributed training, even though they are fast and effective when used on a single machine or high-bandwidth cluster. One way to achieve distribution with these frameworks is through training separate model instances for disjoint subsets of the available data. At prediction time, the outputs of those instances can then be combined through standard ensemble model aggregation\citep{Opitz1999}.
+Implementations that follow this strategy are not dependent on any specific library. They lend themselves well to implementation on top of standard distributed systems frameworks. The training process involves executing the individual model trainings on a number of independent machines in parallel. Neither orchestration nor communication are necessary once training has started. Training on $m$ machines with $m$ disjoint subsets of the dataset results in $m$ different models that are serialized somewhere. Each of these can have separate parameters, hyperparameters, and layer architecture. At prediction time, the trained model instances can then all be deserialized and run on new data. This can once again happen in a distributed fashion, either through data- or model-parallelism.
+One large drawback is that this method is dependent on proper subdivision of the training data. If large biases are present in the training sets of some of the models, those instances could have a negative overall effect at prediction time.
+There's a large number of frameworks available for this method, as any machine learning framework is suitable for it. Some popular implementations are Tensorflow\citep{Tensorflow2015}, MXNet\citep{MXNet2017} and PyTorch\citep{PyTorch2017}. Further analysis of these frameworks is out of scope.
+
+\paragraph{Parallel synchronous SGD}
+
+
+\subparagraph{Tensorflow \& Baidu AllReduce \citep{BaiduAllReduce2017}}
+
+applies technologies as known from generic high performance compute (namely Message Passing Interface (MPI) and its AllReduce operation) to iteratively run model training on separate minibatches of the training data. AllReduce is used to, after each operation, apply each of the workers’ gradients onto the last common model state, and then propagate the result of that operation back to each worker. This is an inherently synchronous process, blocking on the result of each workers’ training iteration before continuing to the next.
+Baidu includes a further optimization from \citet{Patarasuk2009} in this process called a Ring AllReduce , which is used to reduce the total amount of communication that is required to execute the full AllReduce operation. Whereas the naive approach to AllReduce (sending all workers’ state to a central node, which executes the reduction and sends back the result to each worker) would scale in bandwidth linearly with the number of nodes, the Ring AllReduce approach would avoid this by connecting each node only with one neighbor for receiving data, and one neighbor for sending data to. Each node would then execute a reduction on a subset of the reduced data array and forward the result of that to the next node, as long as necessary until each subset of the array has a fully reduced result available on one node. The results are then cycled through the ring step by step, until each node has each subset of the result available to it. Each comms operation can happen in parallel (utilizing all available bandwidth and putting the bottleneck of communication time at the latency of the slowest link between neighbor nodes) without risk of contention and related efficiency losses.
+Baidu claims linear speedup when applying this technique to train deep learning networks. However, it has only been demonstrated on relatively small clusters (5 nodes each, though each node has multiple GPUs that communicate with each other through the same system). Also, although not explicitly mentioned, it is likely that their experimental setup makes use of an Infiniband high bandwidth link between each node, as opposed to the commodity machine approach that many other frameworks offer. The approach also lacks fault tolerance by default, as each node in the ring cannot be missed. This could be counteracted using redundancy, at cost of efficiency.
+The system has been integrated into Tensorflow as an alternative to its parameter server-based approach that is described below.
+
+\subparagraph{Caffe2}
+
+(primarily maintained by Facebook) distributes ML (data-parallel) through, once again, AllReduce. It does this using NCCL between GPUs on a single host, and custom code between hosts that uses the Gloo[] library . Facebook uses Ring AllReduce (which offers better bandwidth \& parallelism guarantees) but also recursive halving and doubling (a divide-and-conquer approach) that offers better latency guarantees. According to their paper, this offers improved performance in latency-limited situations such as for small buffer sizes and large server counts. The end result of Facebook’s approach is that they can train ImageNet in the span of 1 hour\citep{Goyal2017}, achieving linear scaling with the number of GPUs. However, no fault-tolerance is present (much like in Baidu's approach).
+
+\subparagraph{Horovod\citep{Horovod2018}}
+
+takes a very similar approach to that of Baidu and its custom Tensorflow MPI module: it adds a layer of AllReduce-based MPI training to Tensorflow. One difference is that Horovod uses the NVIDIA Collective Communications Library (NCCL) for increased efficiency when training on (Nvidia) GPUs. Data-parallelizing an existing Tensorflow model is relatively simple (a few lines of code need to be added), after which the model can be optimized through synchronous SGD in the same Ring AllReduce-based manner as proposed by Baidu. However, Horovod lacks fault tolerance.
+
+\subparagraph{CNTK}
+
+offers multiple modes of data-parallel distribution, multiple of which (the synchronous ones) use the Ring AllReduce tactics previously described (again scaling linearly but lacking fault tolerance). Two innovations are offered by the library:
+
+1-bit stochastic gradient descent (\citet{Seide2014}) is an implementation of SGD that quantizes training gradients to a single bit per value. This reduces the number of bits that need to be communicated when doing distributed training by a large constant factor.
+
+Block-momentum SGD (\citet{Chen2016}) divides the training set into m blocks and n splits. Each of n machines trains a split in each block. The gradients calculated for all splits within a block are averaged to arrive at the weights for the block. The block updates are then merged into the global model, while applying block-level momentum and learning rate. 
+
+
+
+\paragraph{Parallel stale-synchronous SGD}
+
+\subparagraph{Petuum \citep{Xing2013}}
+
+aims to provide a generic platform for any type of machine learning (as long as it is iteratively convergent) on big data and big models (terabytes/petabytes; hundreds of billions of parameters). It supports data- and model-parallelism. That approach exploits ML’s error tolerance, dynamic structural dependencies, and non-uniform convergence in order to achieve good scalability on large datasets and models. This is in contrast to e.g. Spark (focusing on fault tolerance \& recovery) and GraphLab (focusing on consistency), which can still be important to ML. The platform uses stale synchronicity (synchronous, but allowing bounded staleness) to exploit error tolerance (since a bit of staleness will have minor effects on convergence), dynamic scheduling policies to exploit dynamic structural dependencies (which helps minimize parallelization error and synchronization cost) and unconverged parameter prioritization to take advantage of non-uniform convergence (reducing computational cost on parameters that are already near optimal). 
+
+Petuum uses the parameter server model (as described in the DistBelief section) to keep track of the parameters of the model being trained. The parameter server is also responsible for maintaining the staleness guarantees. In addition, it also exposes a scheduler that lets the model developer control the ordering of parallelized model updates.
+
+The programming model that Petuum used is different to that of DistBelief in one core way: data- and model-parallelism operate at the same tier. Whereas in DistBelief model-parallelism is managed inside model shards, and each model replica operates on the parameter server as a single entity, Petuum instead has both model and data slices interact with the parameter server directly, and requires the user to define some central update logic if model-parallelism is involved. This allows slightly more programmer control.
+
+When developing a model using Petuum, developers have to implement at least one method, named push, which is responsible for each of the parallelized model training operations. Its implementation should pull the model state from the parameter server, run a training iteration, and push a gradient to the parameter server. Petuum by default automatically manages the scheduling aspect and the parameter merging logic, so that data-parallel models don’t require any additional operations. If you want model-parallelism, however, you need to also implement the schedule method (which tells each of the parallel workers which parameters to train) and the pull method (which defines the aggregation logic for each of the parallelly generated parameter gradients).
+
+Petuum provides an abstraction layer that also allows it to run on systems using YARN and HDFS, which simplifies compatibility with pre-existing clusters. 
+
+\paragraph{Parallel asynchronous SGD \& Parameter Servers}
+
+\subparagraph{DistBelief \citep{DistBelief2012}}
+
+is one of the early practical implementations of large-scale distributed learning, initially developed by Google. They encountered the limitations of GPU training, and built DistBelief to counteract it. DistBelief supports data- and model-parallel training on tens of thousands of CPU cores. At the time of writing, it was used to successfully train models 30x larger than reported in preceding literature.
+
+DistBelief imposes no restrictions on the structure of the models. 
+At the time, Google also evaluated solutions based on MapReduce\citep{MapReduce} and GraphLab\citep{GraphLab}. MapReduce ”was ill-suited for the iterative computations inherent in deep network training”. GraphLab “would not exploit computing efficiencies available in the structured graphs typically found in deep networks”. This led the company to develop a domain-specific alternative instead.
+
+To achieve efficient model-parallelism, DistBelief exploits the graphical nature of neural networks. Machines each execute the training of a part of the model, which can span subsets of multiple layers. Communication is only required at those points where a node’s output is used as the input of a node trained by another machine. To define a DistBelief model, “[t]he user defines the computation that takes place at each node in each layer of the model, and the messages that should be passed during the upward and downward phases of computation.” Partitioning of the model across a cluster is transparent and requires no structural modifications. Efficiency of a given partitioning, however, depends on the model’s connectivity structure and computational needs, and requires careful design. Locally connected models, for example, lend themselves for model parallelism, because of limited cross-partition communication. Fully connected models, on the other hand, have more substantial cross-partition dependencies and are therefore harder to efficiently distribute through DistBelief.
+
+To further parallelize model training, data parallelism is applied on top of the model parallelism. A centralized sharded parameter server as proposed by \citet{Li2014Comms}\citep{Li2014Scaling} is used to allow each of a set of model replicas (which may internally be model-parallel) to share parameters. DistBelief supports two methods of data parallelism, both of which are resilient to processing speed variance between model replicas, as well as full replica failure. The first method is downpour SGD, an asynchronous alternative to the inherently sequential SGD. Each replica of the model fetches the latest model parameters from the parameter server every $n_{fetch}$ steps, updates these parameters in accordance with the model, and pushes the tracked parameter gradients to the parameter server every $n_{push}$ steps. Simple implementations would use $n_{fetch} = n_{push} = 1$, causing it to fetch the parameters before every training iteration, and push the iteration’s gradient once it is available. Communication overhead can be reduced by increasing either or both parameters. Fetches and pushes could also each be executed on a separate thread, which would require only weak synchronization between each other and the training thread.
+
+DistBelief layers are developed in C++, 
+
+Downpour SGD is resilient to machine failures more than SGD, as it allows training to continue even if some model replicas are offline. The optimization process itself, however, becomes less predictable due to parameters that are out of sync on the model replicas or between shards of the parameter server. No theoretical guarantees or citations are offered to support the robustness of this approach, yet the authors “found relaxing consistency requirements to be remarkably effective.” Tactics that contribute to robustness are the application of adaptive learning rates through AdaGrad[cite adagrad here] and “warmstarting “the model through training a single model replica for a while before scaling up to the full number of machines. The authors make note of not having stability issues after applying these.
+The second method of parallelization is distributed L-BGFS. This makes use of an external coordinator process that divides training work between model replicas, as well as some operations on the parameters between the parameter server shards.
+
+The shards of the parameter server each hold a fraction of the total parameter space of the model being trained. The model replicas pull the parameters from all shards; each parallelized part of the model only retrieves those parameters that it needs.
+
+Performance improvements are high but very expensive in terms of CPU hours. DistBelief also did not support distributed GPU training at the time of \citet{DistBelief2012}, which would probably reduce training time quite significantly.
+
+\subparagraph{Tensorflow \citep{Tensorflow2015}\citep{Tensorflow2016}}
+
+is the evolution of DistBelief, in the sense that it was developed to replace DistBelief within Google, and borrows both concepts and experience from it. By "both simplifying and generalizing [DistBelief]"\citep{Tensorflow2016}, the Tensorflow developers intend to cater to a wider variety of ideas.
+
+TensorFlow represents both model algorithms and state as a dataflow graph, execution of which can be distributed. This facilitates different parallelization schemes that can take e.g. state locality into account. The level of abstraction of the dataflow graph is that of mathematical operations on tensors (i.e. $n$-dimensional matrices), as opposed to DistBelief, which abstracted at the layer level. Consequently, defining a new type of neural network layer in Tensorflow requires no custom code - it can just be a subgraph composed from simpler math operations.
+
+A Tensorflow model is first defined as a symbolic dataflow graph. Once this is done, the graph is optimized and then executed on the available hardware. One advantage of this model is that it allows Tensorflow to tailor its execution strategy towards the types of devices available to it. When working with e.g. GPUs or TPUs (Tensor Processing Units\citep{TPU2017})
+
+
+\paragraph{Parallel hybrid-synchronous SGD}
+
+Both synchronous and asynchronous approaches have some significant drawbacks, as is explored by \citet{ChenJianmin2016}. A few frameworks attempt to find a middle ground instead that combines some of the best properties of each model of parallelism, and diminishes some of the drawbacks.
+
+\subparagraph{MXNet-MPI \citep{Mamidala2018}}
+
+takes an approach to distributed ML (using a modified version of MXNet as a proof of concept) that combines some of the best aspects of both asynchronous (parameter server) and synchronous (MPI) implementations. The idea here is to use the same approach as described in the MXNet section, but instead of having single workers communicate with the parameter server, to cluster those workers together into groups that internally apply synchronous SGD over MPI/AllReduce. This has the benefits of easy linear scalability of the sync MPI approach, and fault tolerance of the async PS approach.
+
+

@@ -39,20 +39,20 @@ Then we'll look at the algorithms that are used to partition and distribute thes
 
 \subsection{Currently used implementations}
 \subsubsection{Generic distributed system frameworks}
-\subsubsection{Domain-specific implementations}
+\input{./sections/domain_specific_implementations.tex}
+
 \subsubsection{Current challenges}
 
+\paragraph{Performance}
 
+A tradeoff that’s seen frequently is the reduction of wall-clock time at cost of significantly increased total processing time. When compute resources are affordable enough, many real-world use cases of machine learning benefit most from being trained rapidly. The fact that this often implies a large multiple in total compute resources (and the associated energy consumption) is not as important, given the revenues and cost-reductions that applying machine learning can effect.  A good example of this is the DistBelief paper, where wall clock time speedup factors are achieved by increasing the number of machines quadratically or worse, and data parallelism only comes out ahead of GPUs when using more than 20 machines. Distributed use of GPUs, as in Tensorflow, has better properties, 
+MPI-based approaches also suffer less from this, borrowing some properties from the HPC setting. The drawback to this is that HPC is not quite as concerned with fault tolerance, as it often depends on expensive hardware that simply doesn’t fail as often (think Infiniband, storage area networks, etc.) - extra scalability is not bought cheaply, and with ever-diminishing returns. Big data often reaches a scale at which this is simply no longer economical. At smaller scales, it might be the best solution for the moment, but it would be interesting to see what industry can come up with that is both easy to use, affordable, scalable, and computation-efficient.
 
+\paragraph{Fault tolerance}
 
+MPI-based approaches seem to scale significantly better than the parameter server approach, but suffer from a lack of fault-tolerance: failure of a single machine blocks the entire training process. At smaller scales this might still be a manageable problem, but past a certain number of nodes the probability of node failure becomes high enough that a lack of fault tolerance is a blocker.
 
+\paragraph{Privacy}
 
-
-
-
-
-<<<<<<< HEAD
-\subsection{Privacy challenges}
-=======
-\subsection{Privacy challenges}
->>>>>>> master
+There are scenarios in which it is beneficial or even mandatory to isolate different subsets of the training data from each other. The furthest extent of this is when a model needs to be trained on datasets that each live on different machines/clusters, and may under no circumstance be colocated or even moved.
+One interesting approach to training a model in a privacy-sensitive context is the use of a distributed ensemble model.
