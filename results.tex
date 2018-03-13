@@ -106,10 +106,12 @@ There are several communication management strategies\cite{Xing16} used to sprea
 	
 	\item Neural networks are composed out of layers, of which the training by using the back-propagation gradient descent algorithm is highly sequential. Because the top layers of neural networks contain a lot more parameters while it accounts only for a small part of the total computation \cite{Xing16}, WFBP \cite{Zhang17} was proposed to spread the computation and communication out in an optimal fashion.
 	
-	\item \textbf{Hybrid communication (HybComm)} Because WBFP does not reduce the communication overhead, HybComm \cite{Zhang17} was proposed. Effectively it combines Parameter Servers (PS)\cite{Wei15} with Sufficient Factor Broadcasting (SFB)\cite{Xie15} by being aware of both the mathematical property of neural networks and the structure of computing clusters. See below for more information about PS and SFB.
+	\item Hybrid communication (HybComm) Because WBFP does not reduce the communication overhead, HybComm \cite{Zhang17} was proposed. Effectively it combines Parameter Servers (PS)\cite{Wei15} with Sufficient Factor Broadcasting (SFB)\cite{Xie15} by being aware of both the mathematical property of neural networks and the structure of computing clusters. See below for more information about PS and SFB.
 	
 \end{itemize}
 
+
+\paragraph{Network topologies}
 There are several network topologies used for Distributed Machine Learning clusters:
 \begin{itemize}
 	\item \textbf{Trees} AllReduce\cite{Agar14}
