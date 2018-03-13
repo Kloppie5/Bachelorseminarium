@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{graphicx}
 \graphicspath{ {Images/} }
+\usepackage[square,sort,comma,numbers]{natbib}
 
 
 \begin{document}
@@ -16,5 +17,8 @@
 \input{./results.tex}
 \input{./discussion.tex}
 \input{./conclusion.tex}
+
+\bibliography{myrefs}
+\bibliographystyle{apalike}
 
 \end{document}
