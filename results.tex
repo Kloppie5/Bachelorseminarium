@@ -88,7 +88,7 @@ There are 3 things to take into account when partitioning an ML program in order
 
 
 \paragraph{Bridging computation and communication}
-Let's look at several ways to efficiently communicate between the nodes taking the interleaving of parallel program computations and inter-worker communication into account.
+Let's look at several ways to efficiently communicate between the nodes taking the interleaving of parallel program computations and inter-worker communication into account. These techniques trade-off communication overhead (at the top of the list) with fresher updates (at the bottom of the list).
 \begin{enumerate}
 	\item BSP model
 	\item Asynchronous parallel execution
@@ -106,7 +106,7 @@ There are several communication management strategies\cite{Xing16} used to sprea
 	
 	\item Neural networks are composed out of layers, of which the training by using the back-propagation gradient descent algorithm is highly sequential. Because the top layers of neural networks contain a lot more parameters while it accounts only for a small part of the total computation \cite{Xing16}, WFBP \cite{Zhang17} was proposed to spread the computation and communication out in an optimal fashion.
 	
-	\item Hybrid communication (HybComm) Because WBFP does not reduce the communication overhead, HybComm \cite{Zhang17} was proposed. Effectively it combines Parameter Servers (PS)\cite{Wei15} with Sufficient Factor Broadcasting (SFB)\cite{Xie15} by being aware of both the mathematical property of neural networks and the structure of computing clusters. See below for more information about PS and SFB.
+	\item Hybrid communication (HybComm) Because WBFP does not reduce the communication overhead, HybComm \cite{Zhang17} was proposed. Effectively it combines Parameter Servers (PS)\cite{Wei15} with Sufficient Factor Broadcasting (SFB)\cite{Xie15} by being aware of both the mathematical property of neural networks and the structure of computing clusters. See below for more information about PS under Centralized Storage and SFB under Decentralized Storage.
 	
 \end{itemize}
 
@@ -114,9 +114,17 @@ There are several communication management strategies\cite{Xing16} used to sprea
 \paragraph{Network topologies}
 There are several network topologies used for Distributed Machine Learning clusters:
 \begin{itemize}
-	\item \textbf{Trees} AllReduce\cite{Agar14}
-	\item \textbf{Centralized storage} Parameter Server (PS)\cite{Agar14}
-	\item \textbf{Decentralized storage} e.g. peer-to-peer storage (e.g. Sufficient Factor Broadcasting (SFB)\cite{Li13})
+	\item \textbf{Trees} AllReduce\cite{Agar14} is an example of a tree-like network topology that provides straightforward parallelization of gradient-based optimization algorithms by accumulating local gradients to obtain a global gradient.\\
+	An advantage is that AllReduce is very fast and highly scalable. A disadvantage is that it only works for reduce operations like in MapReduce.
+	\begin{minipage}{\linewidth}
+		\centering
+		\includegraphics[scale=0.5]{AllReduce.png}
+		\captionof{figure}{AllReduce operation. Initially, each node holds its own value. Values are passed up the tree and summed, until the global sum is obtained in the root node (reduce phase). The global sum is then passed back down to all other nodes (broadcast	phase). At the end, each node contains the global sum.}
+	\end{minipage}
+	\item \textbf{Centralized storage} Centralized storage is used for topologies where a single "master" or "server" node is in the center and many "slave" or "client" nodes communicate only with this master node. A practical implementation of this is the Parameter Server paradigm (PS). Each parameter server keeps a shard of the global model parameters as a key-value store. Each client communicates with the parameter server to read / update the parameters. \\
+	An advantage is that all model parameters are in a global shared memory which makes it easy to inspect the model. A disadvantage is that the parameter servers are a bottleneck because they're handling all communication. To partly accommodate this issue, the techniques mentioned under "Bridging computation and communication" are used.
+	\item \textbf{Decentralized storage} In contrast to centralized storage, in decentralized storage every worker maintains its own local view of the parameters and the workers communicate directly to each other. An example implementation is a peer-to-peer network where every machine broadcasts everything to all other machines. To reduce the amount of communication between all workers, Sufficient Factor Broadcasting (SFB)\cite{Li13}) was proposed. It Decomposes the parameter matrix \textbf{W} into the outer products of the two vectors \textbf{u} and \textbf{v}: \textbf{ΔW = uv\textsuperscript{T}}. The vectors u and v are \textit{sufficient factors}, meaning that they are sufficient to reconstruct the update matrix \textbf{ΔW}. SFB only broadcasts the sufficient factors and lets the workers reconstruct the updates.\\
+	An advantage is that, with SFB, decentralized storage is relatively communication efficient and that there is no centralized bottleneck, making it more scalable.
 \end{itemize}
 
 
