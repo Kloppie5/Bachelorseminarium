@@ -1,13 +1,96 @@
 
 \section{Alternatives to Distributed machine learning}
+Even though the most popular solution to increasing computation power for Machine
+learning is currently distributing the workload over a large amount of machines
+there are other more traditional ways to increase computation power. These ways
+being the use of Application Specific Integrated Circuits, and special multi core
+computer architectures.
 
 \subsection{Asics}
+The idea of creating ASICs for use in highly specialized tasks is not a new idea
+to machine learning, in recent times the demand for such chips has risen masively[5]
+looking at applications such as bitcoin mining asics have had a massive competitive
+advantage over GPUS and CPUS rendering them essentially useless. The main reason
+that ASICs have such a good outlook when looking at machine
+learning is the fact that most of the work in most areas are matrix multiplications.
+This means that it is viable to have a chip that can only multiply matrixes and nothing
+else.
 
-\subsection{Google TPU, Epiphany architecture}
+Google took this idea of ASICs and have created their Tensor Processing Unit (TPU)[1]
+which as the name hints is an ASIC computer that specializes in calculations that
+use tensors, this works well together with their Tensor flow library which is one
+of the most popular Neural Network Libraries around at the moment. Architecture of
+the chip can be seen in figure \ref{TPU_Architecture}.
 
-\subsection{RISC vs CISC}
+\begin{figure}
+  \includegraphics[scale=0.5]{TPU_Architecture.png}
+  \caption{Google TPU Architecture[4]}
+  \label{TPU_Architecture}
+\end{figure}
+
+The most important aspect of the TPU is the Matrix Multiply unit that is positioned
+on the right of the diagram. As can be seen the TPU uses a PCIe bus to communicate
+with a server, so it is not a stand alone unit. Which is usefull as it can then also
+be used in a distributed setting.
+
+The performance improvement of the TPU vs a regular CPU/GPU combinations is not only
+in the increased processing power, but also in the efficiency, which is important
+for big companies that want to run many TPUs in the same building. In figure \ref{TPU_Relative_Performance}
+it can be seen that the performance/watt relative to GPUs and CPUs of a TPU is many times higher,
+up to nearly 200x the performance/watt.
+
+\begin{figure}
+  \includegraphics[scale=0.5]{TPU_Relative_Performance.png}
+  \caption{TPU performance, relative to CPU and GPU, the total performance includes server power costs. GM and WM are geometric and weighted means respectively [4]}
+  \label{TPU_Relative_Performance}
+\end{figure}
+
+Other than the power efficiency the total processing power of a TPU is also far higher
+than a GPU or CPU in figure \ref{TPU_Performance} where it can be seen that the pure
+power of a TPU far outscales a CPU/GPU in most cases.
+
+\begin{figure}
+  \includegraphics[scale=0.5]{TPU_Performance.png}
+  \caption{TPU performance on 6 common machine learning tasks[1]}
+  \label{TPU_Performance}
+\end{figure}
 
 
+\subsection{Computer architectures}
+Other than using ASICs in order to increase the amount of work a computer can do
+a different architecture can also be used that is deisgned to increase the amount
+of useable cores on a computer massively. Such an architecture exists in the form
+of the Epiphany architecture. The Epiphany architecture is a Multiple Instruction,
+Multiple Data (MIMD) architecture that uses an array of processors, that all use the
+same memory to speed up execution of floating point operations[2].
+
+The newest chip that Adapteva have managed to produce is the Epihpany V, which uses
+1024 cores on a single chip[2]. Although the power consumption of their newest chip
+is not yet public information, they have released numbers boasting a power usage of
+only 2 watt on their Epiphany IV chip[6].
+
+Using multiple processors to process one set of data is not a new idea in computer
+Science, for this purpose MPI was developed to simplify the distribution of work,
+usually over a cluster of workers. The same framework can also be adapted to the
+Epiphany chips as was demonstrated by Richie et al. in their paper. They found that
+the RISC chips were able to perform extremely fast matrix operations until their on board
+memory was filled[3]. in figure \ref{Epiphany_MPI} it can be seen that performance increases
+until the matrix no longer fits in memory.
+
+\begin{figure}
+  \includegraphics[scale=0.5]{Epiphany_MPI.png}
+  \caption{Epiphany chip performance with different matrix sizes[3].}
+  \label{Epiphany_MPI}
+\end{figure}
+
+\subsection{Conclusion}
+As can be seen with the examples above there are many differnt ways in which the
+processing power needed for machine learning can be create. With both focussing
+on power efficiency as well as computational power. However it must be noted,
+that due to the benefits of space and power supply offered by a distributed system
+all alternative solutions, work alot better than a normal computer when not distributed
+yet they all have the ability to be used together in a distribued setting without
+loosing much if any in the form of performance.
 
 
 [1] https://cloud.google.com/blog/big-data/2017/05/an-in-depth-look-at-googles-first-tensor-processing-unit-tpu %google tpu bibliography
@@ -15,3 +98,4 @@
 [3] https://www-sciencedirect-com.tudelft.idm.oclc.org/science/article/pii/S1877750315000617?_rdoc=1&_fmt=high&_origin=gateway&_docanchor=&md5=b8429449ccfc9c30159a5f9aeaa92ffb&ccp=y %mpi on epiphany architecture
 [4] http://delivery.acm.org/10.1145/3090000/3080246/p1-Jouppi.pdf?ip=145.94.160.220&id=3080246&acc=OA&key=0C390721DC3021FF%2E512956D6C5F075DE%2E4D4702B0C3E38B35%2E5945DC2EABF3343C&__acm__=1521207947_dd71d367ebbdf28d05c9b10548e1c130 %tpu vs cpu and gpu
 [5] https://www.nytimes.com/2018/01/14/technology/artificial-intelligence-chip-start-ups.html %rise in demand for chips
+[6] http://www.adapteva.com/docs/e64g401_datasheet.pdf
