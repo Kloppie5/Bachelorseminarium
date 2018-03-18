@@ -8,7 +8,7 @@ computer architectures.
 
 \subsection{Asics}
 The idea of creating ASICs for use in highly specialized tasks is not a new idea
-to machine learning, in recent times the demand for such chips has risen masively[5]
+to machine learning, in recent times the demand for such chips has risen masively\cite{Metz18}
 looking at applications such as bitcoin mining asics have had a massive competitive
 advantage over GPUS and CPUS rendering them essentially useless. The main reason
 that ASICs have such a good outlook when looking at machine
@@ -16,7 +16,7 @@ learning is the fact that most of the work in most areas are matrix multiplicati
 This means that it is viable to have a chip that can only multiply matrixes and nothing
 else.
 
-Google took this idea of ASICs and have created their Tensor Processing Unit (TPU)[1]
+Google took this idea of ASICs and have created their Tensor Processing Unit (TPU)\cite{Sato17}
 which as the name hints is an ASIC computer that specializes in calculations that
 use tensors, this works well together with their Tensor flow library which is one
 of the most popular Neural Network Libraries around at the moment. Architecture of
@@ -24,7 +24,7 @@ the chip can be seen in figure \ref{TPU_Architecture}.
 
 \begin{figure}
   \includegraphics[scale=0.5]{TPU_Architecture.png}
-  \caption{Google TPU Architecture[4]}
+  \caption{Google TPU Architecture\cite{Joup17}}
   \label{TPU_Architecture}
 \end{figure}
 
@@ -41,7 +41,7 @@ up to nearly 200x the performance/watt.
 
 \begin{figure}
   \includegraphics[scale=0.5]{TPU_Relative_Performance.png}
-  \caption{TPU performance, relative to CPU and GPU, the total performance includes server power costs. GM and WM are geometric and weighted means respectively [4]}
+  \caption{TPU performance, relative to CPU and GPU, the total performance includes server power costs. GM and WM are geometric and weighted means respectively \cite{Joup17}}
   \label{TPU_Relative_Performance}
 \end{figure}
 
@@ -51,7 +51,7 @@ power of a TPU far outscales a CPU/GPU in most cases.
 
 \begin{figure}
   \includegraphics[scale=0.5]{TPU_Performance.png}
-  \caption{TPU performance on 6 common machine learning tasks[1]}
+  \caption{TPU performance on 6 common machine learning tasks\cite{Sato17}}
   \label{TPU_Performance}
 \end{figure}
 
@@ -62,24 +62,24 @@ a different architecture can also be used that is deisgned to increase the amoun
 of useable cores on a computer massively. Such an architecture exists in the form
 of the Epiphany architecture. The Epiphany architecture is a Multiple Instruction,
 Multiple Data (MIMD) architecture that uses an array of processors, that all use the
-same memory to speed up execution of floating point operations[2].
+same memory to speed up execution of floating point operations\cite{Olof16}.
 
 The newest chip that Adapteva have managed to produce is the Epihpany V, which uses
-1024 cores on a single chip[2]. Although the power consumption of their newest chip
+1024 cores on a single chip\cite{Olof16}. Although the power consumption of their newest chip
 is not yet public information, they have released numbers boasting a power usage of
-only 2 watt on their Epiphany IV chip[6].
+only 2 watt on their Epiphany IV chip\cite{Adap}.
 
 Using multiple processors to process one set of data is not a new idea in computer
 Science, for this purpose MPI was developed to simplify the distribution of work,
 usually over a cluster of workers. The same framework can also be adapted to the
 Epiphany chips as was demonstrated by Richie et al. in their paper. They found that
 the RISC chips were able to perform extremely fast matrix operations until their on board
-memory was filled[3]. in figure \ref{Epiphany_MPI} it can be seen that performance increases
+memory was filled\cite{Rich15}. in figure \ref{Epiphany_MPI} it can be seen that performance increases
 until the matrix no longer fits in memory.
 
 \begin{figure}
   \includegraphics[scale=0.5]{Epiphany_MPI.png}
-  \caption{Epiphany chip performance with different matrix sizes[3].}
+  \caption{Epiphany chip performance with different matrix sizes\cite{Rich15}.}
   \label{Epiphany_MPI}
 \end{figure}
 
@@ -91,11 +91,3 @@ that due to the benefits of space and power supply offered by a distributed syst
 all alternative solutions, work alot better than a normal computer when not distributed
 yet they all have the ability to be used together in a distribued setting without
 loosing much if any in the form of performance.
-
-
-[1] https://cloud.google.com/blog/big-data/2017/05/an-in-depth-look-at-googles-first-tensor-processing-unit-tpu %google tpu bibliography
-[2] https://arxiv.org/pdf/1610.01832.pdf %epiphany V chip
-[3] https://www-sciencedirect-com.tudelft.idm.oclc.org/science/article/pii/S1877750315000617?_rdoc=1&_fmt=high&_origin=gateway&_docanchor=&md5=b8429449ccfc9c30159a5f9aeaa92ffb&ccp=y %mpi on epiphany architecture
-[4] http://delivery.acm.org/10.1145/3090000/3080246/p1-Jouppi.pdf?ip=145.94.160.220&id=3080246&acc=OA&key=0C390721DC3021FF%2E512956D6C5F075DE%2E4D4702B0C3E38B35%2E5945DC2EABF3343C&__acm__=1521207947_dd71d367ebbdf28d05c9b10548e1c130 %tpu vs cpu and gpu
-[5] https://www.nytimes.com/2018/01/14/technology/artificial-intelligence-chip-start-ups.html %rise in demand for chips
-[6] http://www.adapteva.com/docs/e64g401_datasheet.pdf
