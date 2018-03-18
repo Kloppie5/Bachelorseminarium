@@ -90,12 +90,13 @@ There are 3 things to take into account when partitioning an ML program in order
 \paragraph{Bridging computation and communication}
 Let's look at several ways to efficiently communicate between the nodes taking the interleaving of parallel program computations and inter-worker communication into account.
 \begin{enumerate}
-	\item BSP model
-	\item Asynchronous parallel execution
-	\item Total Asynchronous Parallel (TAP)
-	\item Stale Synchronous Parallel (SSP)
-	\item ASP
+	\item \underline{BSP:} Bulk Synchronous Parallel, the most simple model; programs will alternate between a computation and a communication phase to ensure consistency\cite{Xing16}. An example of program following the BSP bridging model is MapReduce.\\
+	An advantage is that serializable BSP ML programs are guaranteed to output a correct solution. A disadvantage is that finished workers must wait at every synchronization barrier till the other works are finished, which results in overhead\cite{Chilimbi14}. Another disadvantage is that the synchronization barrier may take a significant amount of time, because of slow communication between the workers.
+	\item \underline{SSP:} Stale Synchronous Parallel, allows the fastest worker to be ahead of the slowest worker up to a bounded number of iterations before the workers are stopped. The fast workers may work for a while on state data, but SSP still limits the maximum staleness between any pair of workers. An advantage is that it still enjoys strong model convergence guarantees. A disadvantage is that, when machines temporarily slow down due to other tasks or users and cause large staleness, the convergence rates are poor.
+	\item \underline{ASP:} Approximate Synchronous Parallel, limits how inaccurate a parameter can be, in contrast to SSP that limits how stale a parameter can be. An advantage is that, when an aggregated update is insignificant, then the server can delay synchronization indefinitely. A disadvantage is that it can be hard to choose the parameter that defines which update are significant and which are not. \cite{Hsieh17}
+	\item \underline{BAP / TAP:} Barrierless Asynchronous Parallel\cite{Han15} or Total Asynchronous Parallel\cite{Hsieh17}; worker machines communicate in parallel without waiting for each other. The advantage is that it usually obtains the highest speedup possible. A disadvantage is that the model converges slowly or even incorrectly because the error grows with the delay, unlike BSP and SSP. \cite{Han15}
 \end{enumerate}
+At the moment, ASP is the state-of-the-art method.
 
 
 \paragraph{Communication strategies}
