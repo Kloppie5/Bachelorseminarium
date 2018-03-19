@@ -65,7 +65,7 @@ TensorFlow represents both model algorithms and state as a dataflow graph, execu
 
 A Tensorflow model is first defined as a symbolic dataflow graph. Once this graph has been constructed, it is optimized and then executed on the available hardware. One advantage of this model is that it allows Tensorflow to tailor its execution strategy towards the types of devices available to it. When working with e.g. GPUs or TPUs (Tensor Processing Units\citep{TPU2017}), Tensorflow can take into account the asynchronicity and intolerance to branching that is inherent to these devices, without requiring any changes to the model itself.
 
-\citet{Shaohuai2017} show Tensorflow achieving sub-40\% efficiency on 4-node cluster training of ResNet-50\citet{He2015}, and about 75\% efficiency on GoogleNet\citep{Szegedy2014}. 
+\citet{Shaohuai2017} show Tensorflow achieving sub-40\% efficiency on 4-node, InfiniBand-connected cluster training of ResNet-50\citet{He2015}, and about 75\% efficiency on GoogleNet\citep{Szegedy2014}. 
 
 
 \subparagraph{MXNet \citep{MXNet2015}}
@@ -80,7 +80,9 @@ On a small cluster (10 machines), MXNet achieves super-linear speedup compared t
 
 \subparagraph{CNTK}
 
-Benchmarks
+again uses a strategy similar to MXNet and Tensorflow. It makes use of dataflow graphs for model definition. Instead of the integrated parameter server approach of the other libraries, however, CNTK uses a separated parameter server called Multiverso, which can also be used by other frameworks.
+
+Performance (both on a single node and on a cluster) seems to be the main factor at which CNTK attempts to differentiate itself. \citet{Shaohuai2017} show CNTK achieving very competitive results of about 75\% efficiency on ResNet-50\citep{He2015} in a 4-node, InfiniBand-connected cluster configuration, outperforming both Tensorflow and MXNet by a significant margin. 
 
 \paragraph{Parallel stale-synchronous SGD}
 
