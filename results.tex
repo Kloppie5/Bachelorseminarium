@@ -215,7 +215,7 @@ There are 3 things to take into account when partitioning an ML program in order
 
 
 \paragraph{Bridging computation and communication}
-Let's look at several ways to efficiently communicate between the nodes taking the interleaving of parallel program computations and inter-worker communication into account. These techniques tradeoff communication overhead (at the top of the list) with fresher updates (at the bottom of the list).
+Let's look at several ways to efficiently communicate between the nodes taking the interleaving of parallel program computations and inter-worker communication into account. These techniques tradeoff fast / correct model convergence (at the top of the list) with faster / fresher updates (at the bottom of the list).
 \begin{enumerate}
 	\item \underline{BSP:} Bulk Synchronous Parallel, the most simple model; programs will alternate between a computation and a communication phase to ensure consistency\cite{Xing16}. An example of program following the BSP bridging model is MapReduce.\\
 	An advantage is that serializable BSP ML programs are guaranteed to output a correct solution. A disadvantage is that finished workers must wait at every synchronization barrier till the other works are finished, which results in overhead\cite{Chilimbi14}. Another disadvantage is that the synchronization barrier may take a significant amount of time, because of slow communication between the workers.
@@ -268,12 +268,6 @@ There are several network topologies used for Distributed Machine Learning clust
 \input{./Generic_implementations.tex}
 \subsubsection{Domain-specific implementations}
 \subsubsection{Current challenges}
-
-
-
-
-\subsubsection{Current challenges}
-
 \paragraph{Performance}
 
 A tradeoff that’s seen frequently is the reduction of wall-clock time at the expense of total processing time (i.e. decreased efficiency). When compute resources are affordable enough, many real-world use cases of machine learning benefit most from being trained rapidly. The fact that this often implies a large multiple in total compute resources (and the associated energy consumption) is not as important, as long as a model saves more money than it costs to run.  A good example of this is found in \citet{DistBelief2012}, where wall clock time speedup factors are achieved by increasing the number of machines quadratically or worse. It still delivered Google competitive advantage for years. Distributed use of GPUs, as in Tensorflow, has better properties, but often still exhibits efficiency below 75\%.
