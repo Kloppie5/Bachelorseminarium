@@ -20,31 +20,159 @@ Our goals include (1) to list regular Machine Learning algorithms that are commo
 Designing a general system in such a way that the regular Machine Learning algorithms can be distributed efficiently is challenging, because every algorithm has its own communication patterns \cite{Jia14}\cite{Newman09}\cite{Rich13}\cite{Smola10}\cite{Takac13}\cite{Tsi12}.
 
 \subsubsection{Machine Learning algorithms}
-We'll first look at Machine Learning is done at a single machine before looking at distributing these. We'll only give a brief description of the algorithms because single-node machine learning is not the focus of this paper.
-
-
-\paragraph{Overview}
-Machine Learning algorithm-families that are used in the literature and perform the actual "learning" include:
+Machine learning algorithms learn to make predictions or decisions based on data. Every machine learning algorithm has its own pros and cons. Machine learning algorithms can be divided into categories based on some of their characteristics;
 \begin{itemize}
-	\item Graphical models \cite{Wain08}\cite{Kol09}\cite{Xin16}
-	\begin{itemize}
-		\item Latent Dirichlet Allocation Topic Model \cite{Blei03}
-	\end{itemize}
-	\item Regularized Bayesian models \cite{Zhu09}\cite{Zhu09-2}\cite{Zhu14}
-	\item Nonparametric Bayesian models \cite{Grif05}\cite{Teh06}
-	\item Sparse structured models
-	\begin{itemize}
-		\item Lasso regression (group Lasso)
-	\end{itemize}
-	\item Large-margin methods
-	\item Deep learning
-	\item Matrix factorization
-	\item Sparse coding
-	\item Latent space modeling
-	\item Distance metric learning
-	\item Non-negative matrix factorization
-	\item Principal component analysis
+	\item \textbf{Feedback}, the type of feedback given to the algorithm during its learning
+	\item \textbf{Goal}, the type of output
+	\item \textbf{Type}, the way they create their output
+	\item \textbf{Method}, the way they change when given feedback
 \end{itemize}
+
+\paragraph{Feedback}
+\begin{itemize}
+	\item \textbf{Supervised}
+		learning uses training data which consists of input objects, usually vectors, and output values. Supervised learning algorithms typically try to find a function to map input to output and use that to find outputs for unknown input objects.
+		% bias vs variance
+		% complexity vs amount of data
+		% dimensionality
+		% noise
+	\item \textbf{Unsupervised}
+		learning uses training data without labels, which means there is no way to look at the accuracy of the output. It is more commonly used to find clusters of datapoints or patterns.
+	\item \textbf{Semi-supervised}
+		learning make use of a usually small amount of labeled data and a large amount of unlabeled data. Clustering can be used to extend the labels known to other datapoints. This is done under the assumption that similar datapoints share a label.
+	\item \textbf{Reinforcement learning}
+		is done by having the model generate an output and having a different system give feedback on how well the output matches the desired output. This is done by either minimizing a risk function or by maximizing a reward function. This means that reinforcement learning can be done without having a big dataset of correct and incorrect input-output pairs. Because of the black box behavior of the model, it is not possible to explicitly correct actions that are sub-optimal and the model might get stuck in a local minimum.
+		% Q-learning
+\end{itemize}
+
+\paragraph{Goals}
+\begin{itemize}
+	\item \textbf{Anomaly detection}
+		can be divided into three categories. \textbf{Supervised anomaly detection} requires data that has a different label for abnormal data and trains a normal classifier. \textbf{Unsupervised anomaly detection} assumes that normal and abnormal datapoints will be groups separately and effectively does clustering. \textbf{Semi-supervised anomaly detection} builds a model of normal data and test whether new datapoints are normal or abnormal. Based on the dataset, different methods perform better than others
+	\item \textbf{Classification}
+		is the problem of putting new datapoints in categories based on the categories of the training data. This is an inherently supervised process. The unsupervised version of this is Clustering.
+	\item \textbf{Clustering}
+		is the problem of grouping together datapoints that are similar according to some criteria. This can be done supervised, but is usually done with significantly big datasets for which labeling might be too expensive
+	\item \textbf{Dimensional reduction}
+		is the problem of reducing the amount of variables looked. This can be done by either selecting only those variables that are relevant, called \textbf{Feature selection}, or by creating new variables that represent multiple other variables, called \textbf{Feature extraction}.
+	\item \textbf{Feature learning / Representation learning}
+		is the set of techniques designed for finding good representations of the data for things like feature detection, classification, clustering, encoding and even matrix factorization.
+		% manifold learning
+		% statistical inference/density estimation
+		% sparse coding
+	\item \textbf{Regression}
+		is the problem of estimating how a dependent variable changes with changes to the independent variables. Parametric regression tries to find the parameters of a function, which speeds up the process if for example a linear correlation is expected. Nonparametric regression also tries to find the type of function, but this requires a larger sample size and significantly more time.
+\end{itemize}
+
+\paragraph{Types}
+\begin{itemize}
+	\item \textbf{Evolutionary algorithms (EAs)},
+		specifically \textbf{Genetic algorithms (GAs)} are algorithms that learn iteratively based on evolution. The algorithm that actually solves the problem is represented by a set of data that determine its properties, called its \textbf{genotype}. The performance of the algorithm is measured using an objective score, calculated using a \textbf{fitness function}. After calculating the fitness of all generated algorithms, the next iteration creates new genotypes based on mutation and crossover of algorithms that are 'more fit'. Generic algorithms can be used to create other algorithms like neural networks, belief networks, decision trees and rule sets.
+	% Graphical models
+	\item \textbf{Perceptron-based}
+		algorithms are based on perceptrons, binary classifiers that map an input vector to being 'active' or 'inactive' by assigning a weight to all inputs and summing over the products of these weights and their inputs and comparing them to a threshold number, usually called the bias. Perceptron-based algorithms commonly use the entire batch of training data to try to find an instance that will work for the entire set. Perceptron-based algorithms are binary and are therefore mainly used binary or multi-label classification.
+	\item \textbf{Rule-based machine learning (RBML)}
+		algorithms use a set of rules that each represent a small part of the problem. These rules usually express a condition and a result for when that condition is met. Because of this if-then relation, rules lend themselves to be more easily interpreted than more abstract types of machine learning algorithms such as neural networks.
+	\item \textbf{Topic Models (TM)}
+		are statistical models for finding and mapping semantic structures in text.
+\end{itemize}
+
+\paragraph{Methods}
+\begin{itemize}
+	\item \textbf{Association rule learning}
+		is a \textit{rule-based machine learning} method that focuses on finding relations between different variables in datasets. This is done by looking at some measure of interest. Examples of this are \textbf{Support}, how often variables appear together; \textbf{Confidence}, how often a causal rule is true; and \textbf{Collective Strength}, a comparison of the amount of instances which contains some but not all variables in the relation and the expected amount if the variables where not related.
+	\item \textbf{Artificial neural networks (ANNs)}
+		are perceptron-based systems using multiple layers. These layers are usually divided into an input layer, an output layer, and one or more hidden layers. Each layer consists of nodes connected to the previous and next layers by weights, usually called synapses. Unlike normal perceptrons, nodes usually use an activation function instead of just a bias.
+		The workings of the algorithm is dependent on the entire network, the algorithm can be changed by changing (1) the weights of the synapses, (2) the layout of the network or (3) the activation function of nodes.
+		Because neural networks require a big amount of nodes, the un-understandability of what a neural network actually does is a major drawback when comparing it to for example decision trees.
+		Neural networks are extensively studied for their ability to analyze enormous sets of data. Neural networks can be divided into subgroups based on the layout of the network;
+		\begin{itemize}
+			\item \textbf{Recurrent neural networks (RNNs)}
+				have synapses going back to previous layers, which means that the previous state of the network influences its current decisions. Neural networks that are not recurrent are called \textbf{feed-forward}. Recurrent synapses give the network a sort of memory that can help with discovering patterns in data that arrives sequentially. Special blocks of nodes in a network can work as a memory cell that can hold some information for an arbitrarily long timespan. These blocks are called long short-term memory (LSTM) units.
+				% finite impulse
+				% 	DAG which can become a feedforward network 
+				% vs infinite impulse
+				% 	DAG which can not be unrolled
+			\item \textbf{Hopfield networks}
+				are a type of non-reflexive, symmetric recurrent neural network that have some 'energy' related to every state of the network as a whole which will reach a local minimum after continuously updating the network.
+			\item \textbf{Deep neural networks (DNNs)},
+				opposite of \textbf{shallow neural networks}, have many hidden layers, which may cause the network to work as a sort of black box
+			\item \textbf{Convolutional neural networkss (CNNs / ConvNets)}
+				are deep, feed-forward neural networks that use convolution layers with nodes connected to only a few nodes in the previous layer. These values are then pooled using pooling layers that can be seen as a way of recognizing abstract features in the data. The convolution makes the network look at local data, making the entire algorithm spatially invariant, which is why they are sometimes called space invariant artificial neural networks (SIANN). Chaining multiple of these convolution and pooling layers together can make the network very good at recognizing complicated constructs in big datasets, like recognizing cars in images or the contextual meaning of a sentence in a paragraph.
+			\item \textbf{Generative adversarial networks (GANs)}
+				consist of two separate networks, one trying to recognize objects from a dataset and one trying to create new data in an attempt to 'fool' the other network into thinking the data is legit.\cite{Li:2013:CAL:2463372.2465801}
+			\item \textbf{Radial Basis Function (RBF) networks}
+				\cite{rbf}
+			\item \textbf{Self-organizing maps (SOMs) / self-organizing feature maps (SOFMs)}
+				are neural networks that learn by unsupervised \textbf{competitive learning}, in which nodes compete for access to specific inputs, causing the nodes to become highly specialized, which reduces redundancy. Iterations effectively move the map closer to the training data, which is where it gets its name from. Some subtypes include time adaptive self-organizing map (TASOM), Binary Tree TASOM (BTASOM) and growing self-organizing map (GSOM)
+			\item \textbf{Stochastic neural networks}
+				make use of stochastic transfer functions or weights, which makes it possible to escape a local minimum. 
+			% 		boltzmann machine
+		\end{itemize}
+		Neural networks trained in many different ways, like using Generic algorithms. The most common approach, especially when talking about Deep neural networks, is using a process called \textbf{backpropagation};
+		\begin{itemize}
+			\item Present a training sample
+			\item Calculate the error in each output neuron, how much lower or higher the output must be adjusted to match the desired output
+			\item Calculate the gradient
+			\item For every layer, adjust the weights and biases based on the gradient
+			\item Repeat
+		\end{itemize}
+	\item \textbf{Autoencoders}
+		are a type of neural network that trained specifically to encode and decode data. Because autoencoders are trained to also decode, the encoded version of the data can be seen as a dimensional reduction of the data
+	\item \textbf{Bayesian networks}, 
+		sometimes called \textbf{belief networks}, are probabilistic directed acyclic graphical models\cite{Wain08}\cite{Kol09}\cite{Xin16} that are used to represent conditional relationships between variables. They are directed to overcome the problems of \textbf{Markov random
+		fields (MRFs)}, also called \textbf{Markov networks}, which use undirected connections. These undirected connections make it impossible to represent dependencies that are non-transitive or otherwise induced. Bayesian networks are commonly used to represent \textbf{Markov processes} (not related to Markov networks) in particular for probabilistic inference or parameter estimations.
+		\textbf{Nonparametric Bayesian models}\cite{Grif05}\cite{Teh06} don't fix the parameters in place, allowing the model to grow with the data size.
+	%		Regularized Bayesian models \cite{Zhu09}\cite{Zhu09-2}\cite{Zhu14}
+	\item \textbf{Decision trees},
+		sometimes called CART trees, after Classification And Regression Trees trees (RAS syndrome), use Rule-based machine learning to create a set of rules that create decision branches. Traversing the tree means applying the rules at each step till you arrive at a leaf of the tree, which represents the decision or classification for that input.
+	\item \textbf{Latent Dirichlet Allocation}\cite{Blei03}
+		makes a mapping between documents and probabilistic set of topics, using the assumption that documents have few different topics and topics use few different words.
+	\item \textbf{Latent semantic analysis (LSA) / latent semantic indexing (LSI)}
+		creates a big matrix of documents and topics in an attempt to classify documents or to find relations between topics. LSA/LSI assumes a Guassian distributes for topics and documents. LSA/LSI doesn't have a way of dealing with words that have multiple meanings.
+	\item \textbf{Naive Bayes classifiers}
+		are relatively simple probabilistic classifiers that assume different features are independent. They can be trained quickly using supervised learning, but are less accurate than more complicated approaches.
+	\item \textbf{Probabilistic latent semantic analysis (PLSA) / probabilistic latent semantic indexing (PLSI)}
+		is the same as LSA/LSI, except that PLSA/PLSI assumes a Poisson distributes for topics and documents instead of the Guassian distribution that is assumed by LSA/LSI, because the Poisson distribution appears to model the real world better. Some subtypes include Multinomial ASymmetric Hierarchical Analysis (MASHA), Hierarchical Probabilistic Latent Semantic Analysis (HPLSA) and Latent Dirichlet Allocation (LDA).
+	% Inductive logic programming (ILP)
+	\item \textbf{Support vector machines (SVMs)}
+		map datapoints to high dimensional vectors for classification and clustering purposes. For datapoints in p-dimensional space, a (p-1)-dimensional hyperplane can be used as a classifier. A reasonable choice would be the hyperplane that properly separates the datapoints in two groups based on their labels, that also has the biggest possible margin. Sometimes special transformation equations, called \textbf{kernels}, are used to change all datapoints to a different representation in which it is easier to find such a hyperplane.
+		Having a lot of dimensions decreases the accuracy of classifying new datapoints, so increasingly large datasets are needed to make the algorithms perform well
+\end{itemize}
+
+Usually a single algorithm isn't enough to solve a problem, and multiple algorithms are combined in something ofter called \textbf{Ensemble Learning}. There are many different ways to do this, depending on what kind of algorithms are used;
+
+\begin{itemize}
+	\item \textbf{Bagging}
+		is the process of building multiple classifiers and combining them into one.
+	\item \textbf{Boosting}
+		is the process of training new models with the data that is misclassified by the previous models.
+	\item \textbf{Bucketing}
+		is the process of training many different models and eventually selecting the one that has the best performance.
+	\item \textbf{Random Forests}\cite{Breiman2001}
+		use multiple decision trees and averaging the prediction made by the individual trees as to increase the overall accuracy. Different trees are given the same 'voting power'.
+	\item \textbf{Stacking}
+		is when multiple classifiers are trained on the dataset and one new classifier uses the output of the other classifiers as input in an attempt to reduce the variance.
+	\item \textbf{Learning Classifier Systems (LCSs)}
+		(not to be confused with the more common usage of the LCS initialism, Longest Common Subsequence) is a kind of modular system of learning approaches. An LCS iterates over datapoints from the dataset and completes the entire learning process in each iteration. The main idea is that an LCS has a limited number of rules that are follow a Genetic Algorithm that forces rules that are suboptimal out of the ruleset. There are many different overall attributes that can drastically change the performance of the LCS based on the dataset;
+		\begin{itemize}
+			\item Michigan-style architecture vs Pittsburgh-style architecture
+			\item supervised vs reinforcement
+			\item incremental vs batch
+			\item online vs offline
+			\item strength-based vs accuracy-based
+			\item complete mapping vs best mapping
+		\end{itemize}
+		Because of increasing complexity of the training of LCS with respect to the size of the data, LCS is mainly used 
+\end{itemize}
+
+
+%Deep learning
+%
+%Multi-task learning (MTL) 
+%
+%Matrix factorization
+%Singular value decomposition (SVD) and principal component analysis (PCA)
 
 
 \paragraph{Algorithms to find best parameters}
@@ -53,6 +181,7 @@ To find the parameters for these algorithms we can use several Machine Learning 
 	\item First-order techniques
 	\begin{itemize}
 		\item Stochastic gradient descent
+% 			Backpropagation
 		\item Stochastic dual coordinate ascent\cite{Shal13}
 		\item L-BFGS
 		\item Conjugate gradient
