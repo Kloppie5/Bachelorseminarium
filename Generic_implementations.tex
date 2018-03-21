@@ -17,7 +17,7 @@ which knows exactly where each chunk is saved.\cite{Ghem03} The Data and workflo
 in figure \ref{GFS_Architecture} below.
 
 \begin{figure}
-  \includegraphics[scale=0.5]{GFS_Architecture.png}
+  \includegraphics[width=\textwidth]{GFS_Architecture.png}
   \caption{Google File System architecture\cite{Ghem03}}
   \label{GFS_Architecture}
 \end{figure}
@@ -30,7 +30,7 @@ adding a file to the Hadoop File System (HDFS) is show in figure \ref{Hadoop_use
 below.
 
 \begin{figure}
-  \includegraphics[scale = 0.5]{Hadoop_use_case.png}
+  \includegraphics[width=\textwidth]{Hadoop_use_case.png}
   \caption{The data flow when adding a file to the HDFS\cite{Shv10}}
   \label{Hadoop_usecase}
 \end{figure}
@@ -50,7 +50,7 @@ which is magnitudes smaller and easier to pass around. The general overview of
 the execution of a map-reduce problem is given in figure \ref{mapreduce_execution}
 
 \begin{figure}
-  \includegraphics[scale=0.5]{mapreduce_execution.png}
+  \includegraphics[width=\textwidth]{mapreduce_execution.png}
   \caption{Overview of the execution of a mapreduce problem\cite{Dean04}}
   \label{mapreduce_execution}
 \end{figure}
@@ -84,7 +84,9 @@ A further note must be made on the lineage graph, as they may not contain a cycl
 and so be a Directed Acyclic Graph (DAG) or else data cannot be recovered.
 
 \begin{figure}
-  \includegraphics[scale = 0.5]{Lineage_graph.png}
+  \begin{center}
+    \includegraphics[scale=0.5]{Lineage_graph.png}
+  \end{center}
   \caption{Example of the lineage graph of an RDD\cite{Zaha12}}
   \label{lineagegraph}
 \end{figure}
