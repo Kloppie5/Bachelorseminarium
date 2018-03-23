@@ -70,7 +70,7 @@ Machine learning algorithms learn to make predictions or decisions based on data
 	\item \textbf{Perceptron-based}
 		algorithms are based on perceptrons, binary classifiers that map an input vector to being 'active' or 'inactive' by assigning a weight to all inputs, summing over the products of these weights and their inputs, and comparing these to a threshold which is called the \textbf{bias}. Perceptron-based algorithms commonly use the entire batch of training data to try to find an instance that will work for the entire set. Perceptron-based algorithms are binary and are therefore mainly used for binary or multi-label classification.
 	\item \textbf{Rule-based machine learning (RBML)}
-		algorithms use a set of rules that represent a small part of the problem each. These rules usually express a condition and a result for when that condition is met. Because of this if-then relation, rules lend themselves to be easier interpreted than relatively abstract types of ML algorithms such as neural networks.
+		algorithms use a set of rules that represent a small part of the problem each. These rules usually express a condition and a result for when that condition is met. Because of this if-then relation, rules lend themselves to be interpreted more easily than relatively abstract types of ML algorithms such as neural networks.
 	\item \textbf{Topic Models (TM)}
 		are statistical models for finding and mapping semantic structures in text.
 \end{itemize}
@@ -102,7 +102,7 @@ Machine learning algorithms learn to make predictions or decisions based on data
 			\item \textbf{Radial Basis Function (RBF) networks}
 				\cite{rbf}
 			\item \textbf{Self-organizing maps (SOMs) / self-organizing feature maps (SOFMs)}
-				are neural networks that learn by unsupervised \textbf{competitive learning} in which nodes compete for access to specific inputs, causing the nodes to become highly specialized, which reduces redundancy. The iterations effectively move the map closer to the training data, which is the cause of its name. Some subtypes include the Time Adaptive Self-Organizing Map (TASOM), Binary Tree TASOM (BTASOM) and Growing Self-Organizing map (GSOM)
+				are neural networks that learn by unsupervised \textbf{competitive learning} in which nodes compete for access to specific inputs, causing the nodes to become highly specialized, which reduces redundancy. The iterations effectively move the map closer to the training data, which is the reason for its name. Some subtypes include the Time Adaptive Self-Organizing Map (TASOM), Binary Tree TASOM (BTASOM) and Growing Self-Organizing map (GSOM)
 			\item \textbf{Stochastic neural networks}
 				make use of stochastic transfer functions or weights which makes it possible to escape a local minimum. 
 			% 		boltzmann machine
@@ -116,7 +116,7 @@ Machine learning algorithms learn to make predictions or decisions based on data
 			\item Repeat
 		\end{itemize}
 	\item \textbf{Auto-encoders}
-		are a type of neural network that trained specifically to encode and decode data. Because auto-encoders are trained to perform decoding apart from encoding, the encoded version of the data can be seen as a dimensional reduction of the data
+		are a type of neural network that trained specifically to encode and decode data. Because auto-encoders are trained to perform decoding separately from encoding, the encoded version of the data can be seen as a dimensional reduction of the data
 	\item \textbf{Bayesian networks}, 
 		sometimes called \textbf{belief networks}, are probabilistic directed acyclic graphical models\cite{Wain08}\cite{Kol09}\cite{Xin16} that are used to represent conditional relationships between variables. They are directed to overcome the problems of \textbf{Markov random
 		fields (MRFs)}, also called \textbf{Markov networks}, which use undirected connections. These undirected connections make it impossible to represent dependencies that are non-transitive or otherwise induced. Bayesian networks are commonly used to represent \textbf{Markov processes} (not related to Markov networks), in particular for probabilistic inference or parameter estimations.
@@ -127,11 +127,11 @@ Machine learning algorithms learn to make predictions or decisions based on data
 	\item \textbf{Latent Dirichlet Allocation}\cite{Blei03}
 		makes a mapping between documents and probabilistic set of topics, using the assumption that documents have few different topics and that those topics use few different words.
 	\item \textbf{Latent semantic analysis (LSA) / latent semantic indexing (LSI)}
-		creates a big matrix of documents and topics in an attempt to classify documents or to find relations between topics. LSA/LSI assumes a Gaussian distributions for topics and documents. LSA/LSI doesn't have a way of dealing with words that have multiple meanings.
+		creates a big matrix of documents and topics in an attempt to classify documents or to find relations between topics. LSA/LSI assumes a Gaussian distribution for topics and documents. LSA/LSI doesn't have a way of dealing with words that have multiple meanings.
 	\item \textbf{Naive Bayes classifiers}
 		are relatively simple probabilistic classifiers that assume different features to be independent. They can be trained quickly using supervised learning, but are less accurate than more complicated approaches.
 	\item \textbf{Probabilistic latent semantic analysis (PLSA) / probabilistic latent semantic indexing (PLSI)}
-		is the same as LSA/LSI except that PLSA/PLSI assumes a Poisson distribution for topics and documents instead of the Gaussian distribution that is assumed by LSA/LSI. The reason for this is because a Poisson distribution seems to model the real world better. Some subtypes include Multinomial ASymmetric Hierarchical Analysis (MASHA), Hierarchical Probabilistic Latent Semantic Analysis (HPLSA) and Latent Dirichlet Allocation (LDA).
+		is the same as LSA/LSI except that PLSA/PLSI assumes a Poisson distribution for topics and documents instead of the Gaussian distribution that is assumed by LSA/LSI. The reason is that a Poisson distribution appears to model the real world better. Some subtypes include Multinomial ASymmetric Hierarchical Analysis (MASHA), Hierarchical Probabilistic Latent Semantic Analysis (HPLSA) and Latent Dirichlet Allocation (LDA).
 	% Inductive logic programming (ILP)
 	\item \textbf{Support vector machines (SVMs)}
 		map data points to high dimensional vectors for classification and clustering purposes. For data points in a p-dimensional space, a (p-1)-dimensional hyperplane can be used as a classifier. A reasonable choice would be the hyperplane that properly separates the data points in two groups based on their labels and also has the biggest possible margin. Sometimes special transformation equations called \textbf{kernels}, are used to change all data points to a different representation in which it is easier to find such a hyperplane.\\
@@ -271,7 +271,7 @@ There are several network topologies used for Distributed Machine Learning clust
 \subsubsection{Current challenges}
 \paragraph{Performance}
 
-A trade off that’s seen frequently is the reduction of wall-clock time at the expense of total processing time (i.e. decreased efficiency). When compute resources are affordable enough, many real-world use cases of machine learning benefit most from being trained rapidly. The fact that this often implies a large multiple in total compute resources (and the associated energy consumption) is not as important, as long as a model saves more money than it costs to run.  A good example of this is found in \citet{DistBelief2012}, where wall clock time speedup factors are achieved by increasing the number of machines quadratically or worse. It still delivered Google competitive advantage for years. Distributed use of GPUs, as in Tensorflow, has better properties, but often still exhibits efficiency below 75\%.
+A trade-off that’s seen frequently is the reduction of wall-clock time at the expense of total processing time (i.e. decreased efficiency). When compute resources are affordable enough, many real-world use cases of machine learning benefit most from being trained rapidly. The fact that this often implies a large multiple in total compute resources (and the associated energy consumption) is not as important, as long as a model saves more money than it costs to run.  A good example of this is found in \citet{DistBelief2012}, where wall clock time speedup factors are achieved by increasing the number of machines quadratically or worse. It still delivered Google competitive advantage for years. Distributed use of GPUs, as in Tensorflow, has better properties, but often still exhibits efficiency below 75\%.
 These performance concerns are much less severe in the context of synchronous SGD-based frameworks, which often do achieve linear speedups in benchmarks. However, most of these benchmarks test at most a few hundred machines, whereas the scale at which e.g. DistBelief is demonstrated can sometimes be two orders of magnitude larger. The reason for this is unclear, although it might be related to the fault tolerance concerns mentioned below. Synchronous frameworks also benefit more from high-bandwidth links such as InfiniBand due to the fact that all nodes' communication is synchronized, even though they are expensive (with costs running up to thousands of euros for even a cheap switch) and can't practically be used in large footprint clusters (e.g. in multiple datacenters) due to wiring and latency constraints.
 
 \paragraph{Fault tolerance}
