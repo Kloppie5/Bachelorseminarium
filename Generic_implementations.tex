@@ -1,20 +1,10 @@
 \subsubsection{Generic distributed system frameworks}
-Distributed system have already been implemented in the industry to solve the
-problem of companies possessing massive amounts of data that they want to be able
-to query and analyze. These frameworks largely rely on the fact that it is cheaper
-to have multiple servers with relatively small storage capacity each in clusters,
-than having one expensive large server.
+Distributed system have already been implemented in the industry to solve the problem of companies possessing massive amounts of data that they want to be able to query and analyze. These frameworks largely rely on the fact that it is cheaper
+to have multiple servers, each of them with a relatively small storage capacity and computing power, rather than having one expensive large server.
 
 \paragraph{The frameworks}
-The main basis of existing frameworks is based on the Google File System\cite{Ghem03}. The
-Google File System or GFS is the system that is used within Google to handle all
-the Big data needs in the company. The architecture behind it is that all data that
-is uploaded to the cluster is split up into chunks, which are then split over the
-'chunk servers' in the node, and replicated a set number of times (usually 3) in
-order to guarantee that data is not lost when a server/storage device breaks. The
-data on the chunk servers can then be accessed by a user who contacts the master,
-which knows exactly where each chunk is saved.\cite{Ghem03} The Data and workflow is described
-in figure \ref{GFS_Architecture} below.
+The basis of existing frameworks is based on the Google File System\cite{Ghem03}. The \textit{Google File System} or \textit{GFS} is the system that is used within Google to handle all the Big data needs within the company. The splits all the data that is uploaded to the cluster up into chunks, which are then split over the "chunk servers" in the node, and replicated a predefined number of times (usually 3) in order to guarantee that the data is not lost when a server fails. The
+data on the chunk servers can then be accessed by a user by contacting the master, which knows exactly on which servers each chunk is saved.\cite{Ghem03} The data and work-flow is described in figure \ref{GFS_Architecture} below.
 
 \begin{figure}
   \includegraphics[width=\textwidth]{GFS_Architecture.png}
@@ -22,12 +12,7 @@ in figure \ref{GFS_Architecture} below.
   \label{GFS_Architecture}
 \end{figure}
 
-The GFS architecture that was desribed in their paper by google, was adapeted into
-an opensource sollution called Hadoop \cite{Shv10} which was worked on mainly by Yahoo! and
-ditributed as an Apache project, which functions essentially the same as the GFS,
-with only minor differences such as naming and chunk size. A typical use case of
-adding a file to the Hadoop File System (HDFS) is show in figure \ref{Hadoop_usecase}
-below.
+The GFS architecture that was described in its paper by Google was adapted into an open-source solution called Hadoop \cite{Shv10}. Hadoop was developed mainly by Yahoo!, distributed as an Apache project and functions essentially the same as GFS. There are only minor differences with GFS such as the naming of certain entities and the chunk size. A typical use case of adding a file to the Hadoop File System (HDFS) is show in figure \ref{Hadoop_usecase} below.
 
 \begin{figure}
   \includegraphics[width=\textwidth]{Hadoop_use_case.png}
@@ -36,18 +21,10 @@ below.
 \end{figure}
 
 \paragraph{Uses of the frameworks}
-The storage framework highlighted above, is one of the most important basis of common implementations used today,
-these implementations are the are frameworks such as Mapreduce and the Apache Spark engine.
+The storage framework highlighted above, is the most-common file-system that empower Big Data implementations today. These implementations are frameworks such as MapReduce and the Apache Spark engine.
 
-\paragraph{Map-reduce}
-Map reduce is a new framework for processing data developed by Google\cite{Dean04} in order
-to process data in a distributed setting, the basis behind this is that first all
-data is split into tuples (called key value pairs) in the map phase, which are then passed to the reduce
-phase in which a calculation is done on them to generate the desired result. The
-benefit of this framework is that data can be distributed on for example a GFS or HDFS
-and instead of having to pass the data to the program, each node is given the program
-which is magnitudes smaller and easier to pass around. The general overview of
-the execution of a map-reduce problem is given in figure \ref{mapreduce_execution}
+\paragraph{MapReduce}
+MapReduce is a new framework for processing data and was developed by Google\cite{Dean04} in order to process data in a distributed setting. Firstly, in the \textit{map phase} all data is split into tuples (called key-value pairs). Then, during the shuffle phase, these key-value pairs are shuffled and passed to the \textit{reduce phase} in which a calculation (often an aggregation) is performed on them to generate the a single output value. The main benefit of this framework is that the data can be distributed across a large amount of machines (which are using for example GFS or HDFS). Additionally, instead of communicating the data between the nodes, the program is communicated between the nodes which is magnitudes smaller and more efficient to pass around. A general overview of the execution of a map-reduce problem is given in figure \ref{mapreduce_execution}.
 
 \begin{figure}
   \includegraphics[width=\textwidth]{mapreduce_execution.png}
@@ -55,33 +32,13 @@ the execution of a map-reduce problem is given in figure \ref{mapreduce_executio
   \label{mapreduce_execution}
 \end{figure}
 
-Furthermore the Map-reduce framework is similar to the Bulk-Synchronous processing (BSP)
-style which is a little older, however, there are some difference as the Map-reduce
-framework doesn't allow communication between nodes in the map phase, it does allow
-communication in the reduce phase when all key value pairs are passed between workers\cite{Pace12}.
-Also, as BSP and Map-reduce are so similar work has gone into transforming BSP tasks into
-map-reduce tasks and as has been shown by Goodrich et al.\cite{Goo11} all BSP programs can be
-converted into Map-reduce programs. Other researchers have gone as far as to say
-that all map-reduce task are so similar to BSP tasks that, becuase BSP has a more theoretical
-basis, all tasks should be modelled as BSP tasks but implemented using the Map-reduce framework
-in order to gain the speed of Map-reduce but the correctness of BSP\cite{Pace12}.
+Furthermore the MapReduce framework is similar to the \textit{Bulk-Synchronous processing (BSP)} style which is a little older. However, there are some differences as the MapReduce framework does not allow communication between nodes in the map phase, but only allows communication during the shuffle phase, in-between the mapping and reduce phase\cite{Pace12}.\\
+Since BSP and Map-reduce are so similar, peope have worked on transforming BSP tasks into MapReduce tasks. Goodrich et al.\cite{Goo11} has shown that all BSP programs can be converted into MapReduce programs and other researchers have gone as far as to say that all MapReduce task are so similar to BSP tasks that, because BSP has a more theoretical basis, all tasks should be modeled as BSP tasks but implemented using the Map-reduce framework in order to gain the speed of MapReduce and the correctness of BSP\cite{Pace12}.
 
 \paragraph{Apache Spark}
-Like Map-reduce Apache Spark is another built upon the ability to run programs
-on a distributed dataset. Spark is a machine learning engine that is capable of
-running fully in memory\cite{Sparkwebsite}, this has the advantage that it is a lot faster than
-more traditional implementations of Hadoop program such as Map-reduce as they need
-to write to disk after every step. This however does add the danger of loosing processed data
- if the power goes out in the worker node.
+Like MapReduce, Apache Spark is another service built on top of a distributed file system to run programs on a distributed dataset. Spark is an open-source cluster-computing framework that is capable of executing an entire directed acyclic graph of transformations (like mappings) and actions (like reductions) fully in memory\cite{Sparkwebsite}. This is contrast to MapReduce, that forces the programmer to first use a mapping phase and then a reduce phase. This way, Spark is a lot faster than MapReduce because when, for example, 2 mapping phases are needed, 2 MapReduce tasks need to be executed which both require to write all (intermediate) data to the disk. Spark on the other hand can keep all the data in-memory which saves expensive writes to the disk, but needs to take additional steps to prevent losing processed data when there's a power outage.\\
 
-The way in which Spark solves the data loss problem, is to use RDDs, which are
-Resilient Distributed Datasets. These datasets are read only and new ones can
-only be created from storage, or merging existing RDDs\cite{Zaha12}. The Resillient part comes
-into play when the data is lost, each RDD has a lineage graph, which shows what
-transformations have been executed on it. This means that once some data is lost
-Spark can easily look back over the lineage graph and recalculate any lost data.
-A further note must be made on the lineage graph, as they may not contain a cycle
-and so be a Directed Acyclic Graph (DAG) or else data cannot be recovered.
+The way in which Spark solves this problem is by using \textbf{RDDs} (Resilient Distributed Datasets). These datasets are read-only and new ones can only be created from data stored on the disk, or transforming existing RDDs\cite{Zaha12}. The Resilient part comes into play when the data is lost. Each RDD has a lineage graph, which shows what transformations have been executed on it. This means that once some data is lost, Spark can trace the path that RDD has followed by using the lineage graph and recalculate any lost data. It is important that the lineage graph does not contain any cycles, i.e. is a Directed Acylic Graph (DAG), because otherwise the data cannot be recovered as Spark will run into an infinite loop.
 
 \begin{figure}
   \begin{center}
@@ -90,8 +47,3 @@ and so be a Directed Acyclic Graph (DAG) or else data cannot be recovered.
   \caption{Example of the lineage graph of an RDD\cite{Zaha12}}
   \label{lineagegraph}
 \end{figure}
-
-
-
-
-[6]http://www.jmlr.org/papers/volume17/15-237/15-237.pdf %MLlib and spark
