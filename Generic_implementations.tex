@@ -3,7 +3,7 @@ Distributed system have already been implemented in the industry to solve the pr
 to have multiple servers, each of them with a relatively small storage capacity and computing power, rather than having one expensive large server.
 
 \paragraph{The frameworks}
-The basis of existing frameworks is based on the Google File System\cite{Ghem03}. The \textit{Google File System} or \textit{GFS} is the system that is used within Google to handle all the Big data needs within the company. The splits all the data that is uploaded to the cluster up into chunks, which are then split over the "chunk servers" in the node, and replicated a predefined number of times (usually 3) in order to guarantee that the data is not lost when a server fails. The
+The basis of existing frameworks is based on the Google File System\cite{Ghem03}. The \textit{Google File System} or \textit{GFS} is the system that is used within Google to handle all the Big data needs within the company. It splits all the data that is uploaded to the cluster up into chunks, which are then split over the "chunk servers" in the node, and replicated a predefined number of times (usually 3) in order to guarantee that the data is not lost when a server fails. The
 data on the chunk servers can then be accessed by a user by contacting the master, which knows exactly on which servers each chunk is saved.\cite{Ghem03} The data and work-flow is described in figure \ref{GFS_Architecture} below.
 
 \begin{figure}
