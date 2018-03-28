@@ -1,5 +1,10 @@
 \section{Literature Review}
-% Answer research questions
+In this section we'll answer all (sub-)research questions to get an overview of the current state-of-the-art of Distributed Machine Learning:
+\begin{itemize}
+	\item Why do we want or need Distributed Machine Learning opposed to (centralized) Machine Learning?
+	\item What technology is used for Distributed Machine Learning?
+	\item What are the currently used implementations?
+\end{itemize}
 
 \subsection{The need for Distributed Machine Learning}
 .\input{alternatives}
@@ -265,8 +270,9 @@ There are several network topologies used for Distributed Machine Learning clust
 
 
 \subsection{Currently used implementations}
+In this section we'll first look at generic implementations for distributed systems, because these are used as the foundation for distributed Machine Learning systems. For the latter one, we'll look at the most popular implementations, including Distributed Ensemble Learning, Parallel Synchronous SGD and Parameter Servers.
+
 \input{./Generic_implementations.tex}
-\subsubsection{Domain-specific implementations}
 \input{./sections/domain_specific_implementations.tex}
 \subsubsection{Current challenges}
 \paragraph{Performance}
