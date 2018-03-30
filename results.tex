@@ -198,6 +198,10 @@ Now we'll look the abstraction of the general design of a Distributed Machine Le
 
 \paragraph{Computation time vs communication vs accuracy}
 
+When Distributed Machine Learning is used on a dataset small enough to use with regular Machine Learning, parallelizing the learning can reduce computation time, as long as the communication costs are not too high. This can become a problem if the model being trained is sufficiently large in comparison to the data. Splitting up the dataset across different machines reduces the accuracy of the individual machines, but depending on the combination of the learning models, the overall accuracy can be better or worse than what a single machine would come up with.
+
+In data that is distributed already, more communication increases accuracy, but big models can very quickly cause the communication costs to be much higher than the actual computation time. It usually comes down to seeking the amount of communication needed to achieve the desired accuracy.
+
 
 \paragraph{Scheduling and balancing the workloads}
 There are 3 things to take into account when partitioning an ML program in order to parallelize it:\cite{Xing16}\\
