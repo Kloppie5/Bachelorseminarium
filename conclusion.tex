@@ -1,7 +1,7 @@
 \section{Conclusion}
-In this paper we reviewed the current state-of-the-art of Distributed Machine Learning. To answer this main research question, we answered in this paper all sub-research questions:
+This paper reviews the current state-of-the-art of Distributed Machine Learning. To answer this main research question, all sub-research questions are answered:
 \begin{itemize}
-	\item \textbf{Why do we want or need Distributed Machine Learning opposed to (centralized) Machine Learning?}
+	\item \textbf{What are the advantages of Distributed Machine Learning over (centralized) Machine Learning?}
 	\begin{itemize}
 		\item \textbf{Which alternatives exist to Distributed Machine Learning?} We discussed several ways to learn from huge amounts of data, including using specialized hardware like ASICs or increasing the computation power per computer (for example with the Epiphany architecture)
 		\item \textbf{How likely are they to remain sufficient for emerging applications?} While Distributed Machine Learning will provide the highest amount of power in the future because it scales in the best case almost horizontally, alternatives may also be used in the future for simpler tasks that are too heavy to run on an ordinary machine but for which a Distributed Machine Learning cluster may be overkill.
@@ -11,14 +11,14 @@ In this paper we reviewed the current state-of-the-art of Distributed Machine Le
 		\item \textbf{What algorithms and with which parameters are used to perform the actual Machine Learning?} We divided ML algorithms into categories based on the type of feedback given to the algorithm, its goal, its type and its method.
 		\begin{itemize}
 			\item \textbf{What algorithms are used to find the best parameters for the algorithms?} We listed several "workhorse" algorithms that optimize the parameters for ML algorithms, categorized in First-order techniques, second-order techniques, coordinate descent, Markov-Chain Monte Carlo and Variational inference.
-			\item \textbf{What algorithms are used to perform the Machine Learning?} For every category we listed several ML methods, with the notable mention of Artificial Neural Networks (ANNs) and Ensemble Learning.
+			\item \textbf{What algorithms are used to perform the Machine Learning?} For every category, this paper lists several ML methods, with the notable mention of Artificial Neural Networks (ANNs) and Ensemble Learning.
 		\end{itemize}
-		\item \textbf{How can we partition and distribute these algorithms across a wide variety of hardware?} To partition and distribute Machine Learning, we looked at 5 sub-research questions:
+		\item \textbf{How can these algorithms be partitioned and distributed across a wide variety of hardware?} To partition and distribute Machine Learning, there 5 sub-research questions that need to be answered:
 		\begin{itemize}
 			\item \textbf{What is the tradeoff between computation time VS communication VS accuracy?} TODO
-			\item \textbf{How to schedule and balance the workloads?} To schedule and balance the workloads, we have to take 3 important decisions: which tasks go or don't go in parallel? What is the order in which tasks will be executed? How do we ensure an even load distribution across the machines?
+			\item \textbf{How to schedule and balance the workloads?} To schedule and balance the workloads, there are 3 major considerations that need to be evaluated: which tasks go or don't go in parallel? What is the order in which tasks will be executed? How can the load be distributed evenly across the machines?
 			\item \textbf{How to bridge computation and communication?} There's a trade-off between correct model convergence and faster updates. BSP and SSP focus on correct model convergence but have a lot of communication overhead because of synchronization barriers. ASP is very communication efficient, but is hard to choose the best parameters for. BAP / TAP are also very communication efficient but provide slow or even incorrect model convergence.
-			\item \textbf{What strategies can be used to optimize communication overhead?} To prevent bursts of communication we can use continuous communication. WBFP balances computation and communication for Neural Networks optimally and to reduce its communication overhead Hybrid Communication was proposed.
+			\item \textbf{What strategies can be used to optimize communication overhead?} To prevent bursts of communication, continuous communication is used. WBFP balances computation and communication for Neural Networks optimally and to reduce its communication overhead Hybrid Communication was proposed.
 			\item \textbf{What network topologies exist to partition the computing cluster?} There are 3 main network topologies: trees, centralized storage and decentralized storage. Trees are used by AllReduce for to obtain efficiently a global gradient. Centralized Storage is implemented by the Parameter Server paradigm and results in a scalable setting of which the global shared memory is easy to inspect. Decentralized storage is implemented in peer-to-peer networks that provide, in combination with Sufficient Factor Broadcasting, a communication efficient and very scalable environment.
 		\end{itemize}
 	\end{itemize}
