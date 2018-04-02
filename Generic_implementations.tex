@@ -20,11 +20,3 @@ Since BSP and MapReduce are so similar, people have worked on transforming BSP t
 Like MapReduce, Apache Spark is another service built on top of a distributed file system to run programs on a distributed dataset. Spark is an open-source cluster-computing framework that is capable of executing an entire directed acyclic graph of transformations (like mappings) and actions (like reductions) fully in memory\cite{Sparkwebsite}. This is contrast to MapReduce, that forces the programmer to first use a mapping phase and then a reduce phase. This way, Spark is a lot faster than MapReduce because when, for example, 2 mapping phases are needed, 2 MapReduce tasks need to be executed which both require to write all (intermediate) data to the disk. Spark on the other hand can keep all the data in-memory which saves expensive writes to the disk, but needs to take additional steps to prevent losing processed data when there's a power outage.\\
 
 The way in which Spark solves this problem is by using \textbf{RDDs} (Resilient Distributed Datasets). These datasets are read-only and new ones can only be created from data stored on the disk, or transforming existing RDDs\cite{Zaha12}. The Resilient part comes into play when the data is lost. This is done by giving each RDD a lineage graph that shows what transformations have been executed on it. This lineage graph ensures that if some data is lost, Spark can trace the path that RDD has followed by using the lineage graph and recalculate any lost data. It is important that the lineage graph does not conty cycles, i.e. is a Directed Acylic Graph (DAG), because otherwise the data cannot be recovered since Spark will run into an infinite loop.
-
-\begin{figure}
-	\begin{center}
-		\includegraphics[scale=0.5]{Lineage_graph.png}
-	\end{center}
-	\caption{Example of the lineage graph of an RDD\cite{Zaha12}}
-	\label{lineagegraph}
-\end{figure}
