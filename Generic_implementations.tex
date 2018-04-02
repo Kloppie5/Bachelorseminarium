@@ -3,21 +3,9 @@ Distributed system have already been implemented in the industry to solve the pr
 to have multiple servers, each of them with a relatively small storage capacity and computing power, rather than having one expensive large server.
 
 \paragraph{The frameworks}
-The basis of existing frameworks is based on the Google File System\cite{Ghem03}. This \textit{Google File System} or \textit{GFS} is the system that is used within Google to handle all the Big data needs within the company. GFS splits all the data that is uploaded to the cluster up into chunks, which are then split over the "chunk servers" in the node. These chunks are then replicated a predefined number of times (usually 3) in order to guarantee that the data is not lost when a server fails. The data on the chunk servers can then be accessed by a user by contacting the master, which knows exactly on which servers each chunk is saved.\cite{Ghem03} The data and work-flow is described in Figure \ref{GFS_Architecture} below.
+The basis of existing frameworks is based on the Google File System\cite{Ghem03}. This \textit{Google File System} or \textit{GFS} is the system that is used within Google to handle all the Big data needs within the company. GFS splits all the data that is uploaded to the cluster up into chunks, which are then split over the "chunk servers" in the node. These chunks are then replicated a predefined number of times (usually 3) in order to guarantee that the data is not lost when a server fails. The data on the chunk servers can then be accessed by a user by contacting the master, which knows exactly on which servers each chunk is saved.\cite{Ghem03}
 
-\begin{figure}
-	\includegraphics[width=\textwidth]{GFS_Architecture.png}
-	\caption{Google File System architecture\cite{Ghem03}}
-	\label{GFS_Architecture}
-\end{figure}
-
-The GFS architecture that was described in its paper by Google was adapted into an open-source solution called Hadoop \cite{Shv10}. Hadoop was developed mainly by Yahoo!, distributed as an Apache project and functions essentially the same as GFS. There are only minor differences with GFS such as the naming of certain entities and the chunk size. A typical use case of adding a file to the Hadoop File System (HDFS) is show in Figure \ref{Hadoop_usecase} below.
-
-\begin{figure}
-	\includegraphics[width=\textwidth]{Hadoop_use_case.png}
-	\caption{The data flow when adding a file to the HDFS\cite{Shv10}}
-	\label{Hadoop_usecase}
-\end{figure}
+The GFS architecture that was described in its paper by Google was adapted into an open-source solution called Hadoop \cite{Shv10}. Hadoop was developed mainly by Yahoo!, distributed as an Apache project and functions essentially the same as GFS. There are only minor differences with GFS such as the naming of certain entities and the chunk size.
 
 \paragraph{Uses of the frameworks}
 The storage framework highlighted above, is the most-common file-system that empower Big Data implementations today. These implementations are frameworks such as MapReduce and the Apache Spark engine.
