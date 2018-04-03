@@ -1,7 +1,7 @@
 \section{Literature Review}
-In this section we'll answer all (sub-)research questions to get an overview of the current state-of-the-art of Distributed Machine Learning:
+In this section the following (sub-)research questions are answered to get an overview of the current state-of-the-art of Distributed Machine Learning:
 \begin{itemize}
-	\item Why do we want or need Distributed Machine Learning opposed to (centralized) Machine Learning?
+	\item What are the advantages of Distributed Machine Learning over (centralized) Machine Learning?
 	\item What technology is used for Distributed Machine Learning?
 	\item What are the currently used implementations?
 \end{itemize}
@@ -12,7 +12,13 @@ With the incredible growth in the amount of data that is being collected on a da
 \input{alternatives}
 
 \subsection{Underlying technology}
-To give you an overview of how Distributed Machine Learning works, we'll give you an abstract framework that includes everything a real implementation should include. We do that by exploiting the three unique properties of Distributed Machine Learning, namely error tolerance, dynamic structural dependency and non-uniform convergence.\cite{Xing16}\\
+To give you an overview of how Distributed Machine Learning works, we'll give you an abstract framework that includes everything a real implementation should include, see Figure \ref{overview_system}.\\
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{general_system_bac_sem.png}
+	\caption{An overview of the algorithms that make up our general system for Distributed Machine Learning}
+	\label{overview_system}
+\end{figure}
+We do that by exploiting the three unique properties of Distributed Machine Learning, namely error tolerance, dynamic structural dependency and non-uniform convergence.\cite{Xing16}\\
 Our goals include (1) to list regular Machine Learning algorithms that are commonly used in a distributed setting; (2) to find algorithms to determine the best parameters for the former algorithms; (3) to trade off computation time with communication and accuracy; and (4) to minimize the amount of bits sent over the network so that the system is no bottlenecked by scarce network bandwidth.\\
 Designing a general system in such a way that the regular Machine Learning algorithms can be distributed efficiently is challenging because every algorithm has its own communication patterns \cite{Jia14}\cite{Newman09}\cite{Rich13}\cite{Smola10}\cite{Takac13}\cite{Tsi12}.
 
@@ -122,7 +128,7 @@ Machine learning algorithms learn to make predictions or decisions based on data
 		\textbf{Nonparametric Bayesian models}\cite{Grif05}\cite{Teh06} don't fix the parameters in place, allowing the model to grow with the data size.
 	%		Regularized Bayesian models \cite{Zhu09}\cite{Zhu09-2}\cite{Zhu14}
 	\item \textbf{Decision trees},
-		sometimes called CART trees, after Classification And Regression Trees (RAS syndrome), use rule-based machine learning to create a set of rules to create decision branches. Traversing the tree means applying the rules at each step until you arrive at a leaf of the tree, which represents the decision or classification for that input.
+		sometimes called CART trees, after Classification And Regression Trees (RAS syndrome), use rule-based machine learning to create a set of rules to create decision branches. Traversing the tree means applying the rules at each step until a leaf of the tree is reached, which represents the decision or classification for that input.
 	\item \textbf{Latent Dirichlet Allocation}\cite{Blei03}
 		makes a mapping between documents and probabilistic set of topics, using the assumption that documents have few different topics and that those topics use few different words.
 	\item \textbf{Latent semantic analysis (LSA) / latent semantic indexing (LSI)}
@@ -173,7 +179,7 @@ Usually a single algorithm isn't accurate enough to solve a problem and therefor
 
 
 \paragraph{Algorithms to find best parameters}
-To find the parameters for these algorithms we can use several Machine Learning workhorse implementations that can be re-used across different Machine Learning algorithm-families. These include:
+To find the parameters for these algorithms, several Machine Learning workhorse implementations can be used that can be re-used across different Machine Learning algorithm-families. These include:
 \begin{itemize}
 	\item First-order techniques
 	\begin{itemize}
@@ -198,7 +204,7 @@ To find the parameters for these algorithms we can use several Machine Learning 
 
 
 \subsubsection{Partitioning and distribution algorithms}
-Now we'll look the abstraction of the general design of a Distributed Machine Learning operating system that executes the Machine Learning workhorses across a wide variety of hardware.
+This section contains an abstraction of the general design of a Distributed Machine Learning operating system that executes the Machine Learning workhorses across a wide variety of hardware.
 
 
 \paragraph{Computation time vs communication vs accuracy}
@@ -210,27 +216,27 @@ In data that is distributed already, more communication increases accuracy, but 
 
 \paragraph{Scheduling and balancing the workloads}
 There are 3 things to take into account when partitioning an ML program in order to parallelize it:\cite{Xing16}\\
-\begin{enumerate}
+\begin{itemize}
 	\item Deciding which tasks go or don't go together in parallel
 	\item Deciding the order in which tasks will be executed
 	\item Ensuring an even load distribution across the machines
-\end{enumerate}
+\end{itemize}
 
 
 \paragraph{Bridging computation and communication}
 To efficiently communicate between the nodes there are several techniques that take the interleaving of parallel program computations and inter-worker communication into account. These techniques trade off fast / correct model convergence (at the top of the list) with faster / fresher updates (at the bottom of the list).
-\begin{enumerate}
-	\item \underline{BSP:} Bulk Synchronous Parallel, the most simple model; programs will alternate between a computation and a communication phase to ensure consistency\cite{Xing16}. An example of program following the BSP bridging model is MapReduce.\\
+\begin{itemize}
+	\item \textbf{Bulk Synchronous Parallel (BSP):} the most simple model; programs will alternate between a computation and a communication phase to ensure consistency\cite{Xing16}. An example of program following the BSP bridging model is MapReduce.\\
 	An advantage is that serializable BSP ML programs are guaranteed to output a correct solution. A disadvantage is that finished workers must wait at every synchronization barrier till the other works are finished, which results in overhead\cite{Chilimbi14}. Another disadvantage is that the synchronization barrier may take a significant amount of time, because of slow communication between the workers.
-	\item \underline{SSP:} Stale Synchronous Parallel, allows the fastest worker to be ahead of the slowest worker up to a bounded number of iterations before the workers are stopped. That way, the fast workers may work for a while on state data, but SSP still limits the maximum staleness between any pair of workers. An advantage is that it still enjoys strong model convergence guarantees. A disadvantage is that, when machines temporarily slow down due to other tasks or users and cause large staleness, the convergence rates are poor.
-	\item \underline{ASP:} Approximate Synchronous Parallel, limits how inaccurate a parameter can be, in contrast to SSP that limits how stale a parameter can be. An advantage is that, when an aggregated update is insignificant, then the server can delay synchronization indefinitely. A disadvantage is that it can be hard to choose the parameter that defines which update are significant and which are not. \cite{Hsieh17}
-	\item \underline{BAP / TAP:} Barrierless Asynchronous Parallel\cite{Han15} or Total Asynchronous Parallel\cite{Hsieh17}; worker machines communicate in parallel without waiting for each other. The advantage is that it usually obtains the highest speedup possible. A disadvantage is that the model converges slowly or even incorrectly because the error grows with the delay, unlike BSP and SSP. \cite{Han15}
-\end{enumerate}
+	\item \textbf{Stale Synchronous Parallel (SSP):} allows the fastest worker to be ahead of the slowest worker up to a bounded number of iterations before the workers are stopped. That way, the fast workers may work for a while on state data, but SSP still limits the maximum staleness between any pair of workers. An advantage is that it still enjoys strong model convergence guarantees. A disadvantage is that, when machines temporarily slow down due to other tasks or users and cause large staleness, the convergence rates are poor.
+	\item \textbf{Approximate Synchronous Parallel (ASP):} limits how inaccurate a parameter can be, in contrast to SSP that limits how stale a parameter can be. An advantage is that, when an aggregated update is insignificant, then the server can delay synchronization indefinitely. A disadvantage is that it can be hard to choose the parameter that defines which update are significant and which are not. \cite{Hsieh17}
+	\item \textbf{Barrierless Asynchronous Parallel\cite{Han15} / Total Asynchronous Parallel\cite{Hsieh17} (BAP / TAP):} worker machines communicate in parallel without waiting for each other. The advantage is that it usually obtains the highest speedup possible. A disadvantage is that the model converges slowly or even incorrectly because the error grows with the delay, unlike BSP and SSP. \cite{Han15}
+\end{itemize}
 At the moment, ASP is the state-of-the-art method.
 
 
 \paragraph{Communication strategies}
-To distribute Machine Learning algorithms we can choose to partition either the data or the model across the machines - referred to respectively as data parallelism and model parallelism \cite{Die12}. These two types of parallelism can be applied at the same time \cite{Xing16}. Data parallelism can be applied to every ML algorithm with an i.i.d. assumption over the data samples, which are most ML algorithms \cite{Xing16}. It partitions the data and assigns it to parallel machines. Model parallelism cannot be applied to most ML algorithms, because the model parameters generally don't have this i.i.d. assumption. It partitions the model parameters and assigns that to parallel machines.\\
+To distribute Machine Learning algorithms, either the data or the model are partitioned across the machines - referred to respectively as data parallelism and model parallelism \cite{Die12}. These two types of parallelism can be applied at the same time \cite{Xing16}. Data parallelism can be applied to every ML algorithm with an i.i.d. assumption over the data samples, which are most ML algorithms \cite{Xing16}. It partitions the data and assigns it to parallel machines. Model parallelism cannot be applied to most ML algorithms, because the model parameters generally don't have this i.i.d. assumption. It partitions the model parameters and assigns that to parallel machines.\\
 There are several communication management strategies\cite{Xing16} used to spread and reduce the amount of data communicated between machines:
 \begin{itemize}
 	\item To prevent bursts of communication over the network, for example after a mapper is finished, continuous communication is used, for example in the state-of-the-art implementation Bösen\cite{Wei15}.
@@ -268,7 +274,7 @@ There are several network topologies used for Distributed Machine Learning clust
 
 
 \subsection{Currently used implementations}
-In this section we'll first look at generic implementations for distributed systems, because these are used as the foundation for distributed Machine Learning systems. For the latter one, we'll look at the most popular implementations, including Distributed Ensemble Learning, Parallel Synchronous SGD and Parameter Servers.
+This section first shows some generic implementations for distributed systems because these are used as the foundation for distributed Machine Learning systems. For the latter one, the most popular implementations are described, including Distributed Ensemble Learning, Parallel Synchronous SGD and Parameter Servers.
 
 \input{./Generic_implementations.tex}
 \input{./sections/domain_specific_implementations.tex}
