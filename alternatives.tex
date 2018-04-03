@@ -6,19 +6,12 @@ there are other more traditional ways to increase computation power. These ways
 include the use of Application Specific Integrated Circuits and special multi-core
 computer architectures.
 
-\paragraph{ASICs}
-The idea of using ASICs in highly specialized tasks is not a new idea
-to machine learning. In recent times the demand for such chips has risen massively\cite{Metz18}.
-For example, for applications like Bitcoin mining, ASICs have a massive competitive
-advantage over GPUs and CPUs, rendering them essentially useless. The main reason
-that the expectations of ASICs are very high when looking at Machine
-Learning is the fact that most of the work in most areas are matrix multiplications,
-an area in which some ASICs excel.
+\paragraph{Aplication Specific Integrated Circuits}
+The idea of using Aplication Specific Integrated Circuits (ASICs) in highly specialized tasks is not a new idea to machine learning. In recent times the demand for such chips has risen massively\cite{Metz18}.
+For example, for applications like Bitcoin mining, ASICs have a massive competitive advantage over GPUs and CPUs, rendering them essentially useless. The main reason that the expectations of ASICs are very high when looking at Machine
+Learning is the fact that most of the work in most areas are matrix multiplications, an area in which some ASICs excel.
 
-Google took this idea of ASICs and have created their own Tensor Processing Unit (TPU)\cite{Sato17},
-which, as the name suggests, is an ASIC that specializes in calculations that
-use tensors. This works well together with their TensorFlow library, which is one
-of the most popular Neural Network Libraries around at the moment.
+Google took this idea of ASICs and have created their own Tensor Processing Unit (TPU)\cite{Sato17}, which, as the name suggests, is an ASIC that specializes in calculations that use tensors. This works well together with their TensorFlow library, which is one of the most popular Neural Network Libraries around at the moment.
 
 
 The most important aspect of the TPU is the Matrix Multiply unit, this is what differences the chip to a CPU/GPU, the TPU can be connected to a server over using a PCI-e bus slot, meaning many TPUs can be used in a datacenter, and if the work load is too high even for a TPU they can be used in a distributed setting.
@@ -44,10 +37,4 @@ it has released numbers boasting a power usage of only 2 watt\cite{Adap}.
 Using multiple processors to process a single dataset is not a new idea in computer Science. For this purpose MPI was developed to simplify the distribution of work, usually over a cluster of workers. The same framework can also be adapted to the Epiphany chips as was demonstrated by Richie et al. in their paper. They found that the RISC chips were able to perform extremely fast matrix operations until their on board memory was filled\cite{Rich15}.
 
 \paragraph{Future relevance}
-As can be seen with the examples above, there are many different ways to get the processing
-power needed to use large-scale Machine Learning. These techniques focus both on
-power efficiency as well as on computational power. However, it must be noted
-that due to the benefits of space and power consumption that distributed systems can offer,
-these are generally preferred above these non-distributed alternatives. However, all of these
-techniques described above can be used in a distributed setting without major performance degradations.
-This makes them a good choice for future applications, as they can use the benefits of both optimized hardware and distributed systems.
+As can be seen with the examples above, there are many different ways to get the processing power needed to use large-scale Machine Learning. These techniques focus both on power efficiency as well as on computational power. However, it must be noted that due to the benefits of space and power consumption that distributed systems can offer, these are generally preferred above these non-distributed alternatives. However, all of these techniques described above can be used in a distributed setting without major performance degradations. This makes them a good choice for future applications, as they can use the benefits of both optimized hardware and distributed systems.
