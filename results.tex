@@ -24,64 +24,64 @@ To give you an overview of how Distributed Machine Learning works, we'll give yo
 	\caption{An overview of the algorithms that make up our general system for Distributed Machine Learning}
 	\label{overview_system}
 \end{figure}
-We do that by exploiting the three unique properties of Distributed Machine Learning, namely error tolerance, dynamic structural dependency and non-uniform convergence.\cite{Xing16}\\
-Our goals include (1) to list regular Machine Learning algorithms that are commonly used in a distributed setting; (2) to find algorithms to determine the best parameters for the former algorithms; (3) to trade off computation time with communication and accuracy; and (4) to minimize the amount of bits sent over the network so that the system is no bottlenecked by scarce network bandwidth.\\
-Designing a general system in such a way that the regular Machine Learning algorithms can be distributed efficiently is challenging because every algorithm has its own communication patterns \cite{Jia14}\cite{Newman09}\cite{Rich13}\cite{Smola10}\cite{Takac13}\cite{Tsi12}.
+This system exploits three unique properties of Distributed Machine Learning: error tolerance, dynamic structural dependencies, and non-uniform convergence.\cite{Xing16}\\
+Our goals include (1) to list regular Machine Learning algorithms that are commonly used in a distributed setting; (2) to find algorithms to determine the best parameters for the aforementioned algorithms; (3) to find a balance between computation time, communication overhead, and accuracy; and (4) to minimize the number of bits sent over the network, so that the system is not bottlenecked by network bandwidth.\\
+Designing a generic system that enables distribution of  regular Machine Learning efficiently is challenging, because every algorithm has its own communication patterns \cite{Jia14}\cite{Newman09}\cite{Rich13}\cite{Smola10}\cite{Takac13}\cite{Tsi12}.
 
 \subsubsection{Machine Learning algorithms}
-Machine learning algorithms learn to make predictions or decisions based on data. Every machine learning algorithm has its own pros and cons. Machine learning algorithms can be divided into categories based on some of their characteristics:
+Machine Learning algorithms learn to make predictions or decisions based on data. Every Machine Learning algorithm has its own pros and cons. Machine Learning algorithms can be divided into categories based on some of their characteristics:
 \begin{itemize}
-	\item \textbf{Feedback}, the type of feedback given to the algorithm during its learning
-	\item \textbf{Goal}, the type of output
-	\item \textbf{Type}, the way they create their output
-	\item \textbf{Method}, the way they change when given feedback
+	\item \textbf{Feedback}, the type of feedback that is given to the algorithm while learning
+	\item \textbf{Goal}, the type of output that is generated
+	\item \textbf{Type}, the architecture used to generate output
+	\item \textbf{Method}, the nature of model evolution that occurs when given feedback
 \end{itemize}
 
 \paragraph{Feedback}
 \begin{itemize}
 	\item \textbf{Supervised}
-		learning uses training data which consists of input objects, usually vectors, and output values. Supervised learning algorithms typically try to find a function that maps input data to some output and use that function to find outputs for unknown input data.
+		learning uses training data that consists of input objects (usually vectors) and output values. Supervised learning algorithms typically attempt to find a function that maps input data to some output, and apply this function to find outputs for unknown input data.
 		% bias vs variance
 		% complexity vs amount of data
 		% dimensionality
 		% noise
 	\item \textbf{Unsupervised}
-		learning uses training data without labels, which means that there is no way to determine the accuracy of the output. It is commonly used to find clusters of data points or patterns.
+		learning uses unlabeled training data, and therefore lacks a clear output accuracy metric. Common use cases are clustering and pattern recognition.
 	\item \textbf{Semi-supervised}
-		learning makes use of usually a small amount of labeled data and a large amount of unlabeled data. Clustering can be used to extend the labels known to other data points. This is done under the assumption that similar data points share a label.
+		learning uses a (generally small) amount of labeled data, and a comparatively large amount of unlabeled data. Clustering can be used to extrapolate known labels onto unlabeled data points. This is done under the assumption that similar data points share a label.
 	\item \textbf{Reinforcement learning}
-		is relies on letting the model generate an output and letting a different system give feedback on how well the output matches the desired output. This is done by either minimizing the risk function or by maximizing the reward function. This means that reinforcement learning can be done without having a big dataset of correct and incorrect input-output pairs. Because of the black box behavior of the model, it is not possible to explicitly correct actions that are sub-optimal and the model might get stuck in a local minimum.
+		relies on a secondary feedback system that evaluates the output accuracy of the model being trained. The feedback system either minimizes a risk function or maximizes a reward function. Reinforcement learning therefore doesn't require a big dataset of correct and incorrect input-output pairs. Because of the black box behavior of the model, it is not possible to explicitly correct actions that are sub-optimal. As a result, the model can converge on a local minimum.
 		% Q-learning
 \end{itemize}
 
 \paragraph{Goals}
 \begin{itemize}
 	\item \textbf{Anomaly detection}
-		can be divided into 3 categories. \textbf{Supervised anomaly detection} requires data that has a different label for abnormal data and trains with this data a normal classifier. \textbf{Unsupervised anomaly detection} assumes that "normal" and "abnormal" data points will be separate groups and clusters these. \textbf{Semi-supervised anomaly detection} builds a model of normal data and tests whether new data points are normal or abnormal. Based on the dataset, different methods perform better than others
+		can be divided into 3 categories. \textbf{Supervised anomaly detection} requires data that has a different label for abnormal data, and trains a classifier on this data. \textbf{Unsupervised anomaly detection} assumes that normal and abnormal data points are separable, and clusters them. \textbf{Semi-supervised anomaly detection} builds a model of normal data, and tests whether new data points are normal or abnormal. Which of these categories is best depends on dataset characteristics.
 	\item \textbf{Classification}
-		is the problem of putting new data points in categories based on the categories of the training data. This is an inherently supervised process. The unsupervised version of this is clustering.
+		is the problem of categorizing unknown data points into categories seen during training. This is an inherently supervised process; its unsupervised equivalent is clustering.
 	\item \textbf{Clustering}
-		is the problem of grouping together data points that are similar according to some criteria. This can be done with a supervised implementation, but is usually done with significantly large datasets for which labeling might be too expensive.
+		is the problem of grouping together data points that are similar according to some metric. This can be solved through supervised learning, but is usually done with large datasets, for which labeling might be expensive.
 	\item \textbf{Dimensional reduction}
-		is the problem of reducing the amount of variables used. This can be done by either selecting only the relevant variables (which is called \textbf{Feature selection}), or by creating new variables that represent multiple other variables (which is called \textbf{Feature extraction}).
+		is the problem of reducing the number of variables in the input data. This can either be achieved by selecting only relevant variables (\textbf{Feature selection}), or by creating new variables that represent multiple others (\textbf{Feature extraction}).
 	\item \textbf{Feature learning / Representation learning}
-		is the set of techniques designed for finding good representations of the data for things like feature detection, classification, clustering, encoding and even matrix factorization.
+		is the problem of finding proper representations of input data for e.g. feature detection, classification, clustering, encoding, or matrix factorization.
 		% manifold learning
 		% statistical inference/density estimation
 		% sparse coding
 	\item \textbf{Regression}
-		is the problem of estimating how a dependent variable changes with changes to the independent variables. Parametric regression tries to find the parameters of a function, which speeds up the process if for example a linear correlation is expected. Nonparametric regression constructs the predictor according to information derived from the data without relying on a predetermined form. This requires a larger sample size and significantly more time.
+		is the problem of estimating how dependent variables relate to their dependencies. Parametric regression attempts to encode this in parameters of some function, which speeds up the process if, for example, a linear correlation is expected. Nonparametric regression constructs a predictor according to information derived from the data. It does this without relying on a predetermined form. This requires a larger sample size, and significantly more time.
 \end{itemize}
 
 \paragraph{Types}
 \begin{itemize}
-	\item \textbf{Evolutionary algorithms (EAs)},
-		specifically \textbf{Genetic algorithms (GAs)} are algorithms that learn iteratively based on evolution. The algorithm that actually solves the problem is represented by a set of data that represents its properties, called its \textbf{genotype}. The performance of the algorithm is measured using a score, calculated using a \textbf{fitness function}. After calculating the fitness score of all generated algorithms, the next iteration creates new genotypes based on mutation and crossover of algorithms that are produce more accurate estimates. Generic algorithms can be used to create other algorithms like neural networks, belief networks, decision trees and rule sets.
+	\item \textbf{Evolutionary algorithms (EAs)} (and 
+		specifically \textbf{Genetic algorithms}) learn iteratively based on evolution. The algorithm that actually solves the problem is represented by a set of properties, called its \textbf{genotype}. The performance of the algorithm is measured using a score, calculated using a \textbf{fitness function}. After calculating the fitness score of all generated algorithms, the next iteration creates new genotypes based on mutation and crossover of algorithms that are produce more accurate estimates. Generic algorithms can be used to create other algorithms like neural networks, belief networks, decision trees, and rule sets.
 	% Graphical models
 	\item \textbf{Perceptron-based}
-		algorithms are based on perceptrons, binary classifiers that map an input vector to being 'active' or 'inactive' by assigning a weight to all inputs, summing over the products of these weights and their inputs, and comparing these to a threshold which is called the \textbf{bias}. Perceptron-based algorithms commonly use the entire batch of training data to try to find an instance that will work for the entire set. Perceptron-based algorithms are binary and are therefore mainly used for binary or multi-label classification.
+		algorithms use binary classifiers (Perceptrons) that label input vectors as 'active' or 'inactive'. Perceptrons assign a weight to all inputs, and sum over the products of these weights and their input. They then compare these to a threshold (known as the \textbf{bias}) to determine the label. Perceptron-based algorithms commonly use the entire batch of training data to try to find an instance that will work for the entire set. They are binary, and therefore primarily used for binary or multi-label classification.
 	\item \textbf{Rule-based machine learning (RBML)}
-		algorithms use a set of rules that represent a small part of the problem each. These rules usually express a condition and a result for when that condition is met. Because of this if-then relation, rules lend themselves to be interpreted more easily than relatively abstract types of ML algorithms such as neural networks.
+		algorithms use a set of rules that each represent a small part of the problem. These rules usually express a condition, and a value for when that condition is met. Because of the clear if-then relation, rules lend themselves to simple interpretation compared to more abstract types of ML algorithms, such as neural networks.
 	\item \textbf{Topic Models (TM)}
 		are statistical models for finding and mapping semantic structures in text.
 \end{itemize}
@@ -89,9 +89,10 @@ Machine learning algorithms learn to make predictions or decisions based on data
 \paragraph{Methods}
 \begin{itemize}
 	\item \textbf{Association rule learning}
-		is a \textit{rule-based machine learning} method that focuses on finding relations between different variables in datasets. This is done by looking at some measure of interest. Examples of this are \textbf{Support} (how often variables appear together), \textbf{Confidence} (how often a causal rule is true) and \textbf{Collective Strength} (a comparison of the amount of instances which contains some of the variables in the relation and the expected amount of these instances if the variables where not related).
+		is a \textit{rule-based machine learning} method that focuses on finding relations between different variables in datasets. Example relatedness metrics are \textbf{Support} (how often variables appear together), \textbf{Confidence} (how often a causal rule is true) and \textbf{Collective Strength} (inverse likelihood of the current data distribution if a given rule does not exist).
+		% CONTINUE HERE
 	\item \textbf{Artificial neural networks (ANNs)}
-		are perceptron-based systems using multiple layers. These layers are usually divided into an input layer, an output layer, and one or more hidden layers. Each layer consists of nodes connected to the previous and next layer by edges with associated weights, usually called synapses. Unlike "normal" perceptrons, these nodes usually use an activation function instead of just a bias.\\
+		are perceptron-based systems that consist of multiple layers. These layers are usually divided into an input layer, an output layer, and one or more hidden layers. Each layer consists of nodes connected to the previous and next layers through edges with associated weights (usually called synapses). Unlike "normal" perceptrons, these nodes usually use an activation function instead of just a bias.\\
 		The workings of the algorithm is dependent on the entire network, the algorithm can be changed by changing (1) the weights of the synapses, (2) the layout of the network or (3) the activation function of nodes.\\
 		Because neural networks require a big amount of nodes, the understandability of what a neural network actually does is a major drawback when comparing it to for example decision trees.\\
 		Neural networks are extensively studied for their ability to analyze enormous sets of data. They can be divided into subgroups based on the layout of the network;
