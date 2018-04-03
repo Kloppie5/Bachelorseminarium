@@ -1,7 +1,7 @@
 \section{Literature Review}
-In this section we'll answer all (sub-)research questions to get an overview of the current state-of-the-art of Distributed Machine Learning:
+In this section the following (sub-)research questions are answered to get an overview of the current state-of-the-art of Distributed Machine Learning:
 \begin{itemize}
-	\item Why do we want or need Distributed Machine Learning opposed to (centralized) Machine Learning?
+	\item What are the advantages of Distributed Machine Learning over (centralized) Machine Learning?
 	\item What technology is used for Distributed Machine Learning?
 	\item What are the currently used implementations?
 \end{itemize}
@@ -135,7 +135,7 @@ Machine Learning algorithms learn to make predictions or decisions based on data
 		\textbf{Nonparametric Bayesian models}\cite{Grif05}\cite{Teh06} don't fix the parameters in place, allowing the model to grow with the data size.
 	%		Regularized Bayesian models \cite{Zhu09}\cite{Zhu09-2}\cite{Zhu14}
 	\item \textbf{Decision trees},
-		sometimes called CART trees, after Classification And Regression Trees (RAS syndrome), use rule-based machine learning to create a set of rules to create decision branches. Traversing the tree means applying the rules at each step until you arrive at a leaf of the tree, which represents the decision or classification for that input.
+		sometimes called CART trees, after Classification And Regression Trees (RAS syndrome), use rule-based machine learning to create a set of rules to create decision branches. Traversing the tree means applying the rules at each step until a leaf of the tree is reached, which represents the decision or classification for that input.
 	\item \textbf{Latent Dirichlet Allocation}\cite{Blei03}
 		makes a mapping between documents and probabilistic set of topics, using the assumption that documents have few different topics and that those topics use few different words.
 	\item \textbf{Latent semantic analysis (LSA) / latent semantic indexing (LSI)}
@@ -186,7 +186,7 @@ Usually a single algorithm isn't accurate enough to solve a problem and therefor
 
 
 \paragraph{Algorithms to find best parameters}
-To find the parameters for these algorithms we can use several Machine Learning workhorse implementations that can be re-used across different Machine Learning algorithm-families. These include:
+To find the parameters for these algorithms, several Machine Learning workhorse implementations can be used that can be re-used across different Machine Learning algorithm-families. These include:
 \begin{itemize}
 	\item First-order techniques
 	\begin{itemize}
@@ -211,7 +211,7 @@ To find the parameters for these algorithms we can use several Machine Learning 
 
 
 \subsubsection{Partitioning and distribution algorithms}
-Now we'll look the abstraction of the general design of a Distributed Machine Learning operating system that executes the Machine Learning workhorses across a wide variety of hardware.
+This section contains an abstraction of the general design of a Distributed Machine Learning operating system that executes the Machine Learning workhorses across a wide variety of hardware.
 
 
 \paragraph{Computation time vs communication vs accuracy}
@@ -239,7 +239,7 @@ At the moment, ASP is the state-of-the-art method.
 
 
 \paragraph{Communication strategies}
-To distribute Machine Learning algorithms we can choose to partition either the data or the model across the machines - referred to respectively as data parallelism and model parallelism \cite{Die12}. These two types of parallelism can be applied at the same time \cite{Xing16}. Data parallelism can be applied to every ML algorithm with an i.i.d. assumption over the data samples, which are most ML algorithms \cite{Xing16}. It partitions the data and assigns it to parallel machines. Model parallelism cannot be applied to most ML algorithms, because the model parameters generally don't have this i.i.d. assumption. It partitions the model parameters and assigns that to parallel machines.\\
+To distribute Machine Learning algorithms, either the data or the model are partitioned across the machines - referred to respectively as data parallelism and model parallelism \cite{Die12}. These two types of parallelism can be applied at the same time \cite{Xing16}. Data parallelism can be applied to every ML algorithm with an i.i.d. assumption over the data samples, which are most ML algorithms \cite{Xing16}. It partitions the data and assigns it to parallel machines. Model parallelism cannot be applied to most ML algorithms, because the model parameters generally don't have this i.i.d. assumption. It partitions the model parameters and assigns that to parallel machines.\\
 There are several communication management strategies\cite{Xing16} used to spread and reduce the amount of data communicated between machines:
 \begin{itemize}
 	\item To prevent bursts of communication over the network, for example after a mapper is finished, continuous communication is used, for example in the state-of-the-art implementation Bösen\cite{Wei15}.
@@ -277,7 +277,7 @@ There are several network topologies used for Distributed Machine Learning clust
 
 
 \subsection{Currently used implementations}
-In this section we'll first look at generic implementations for distributed systems, because these are used as the foundation for distributed Machine Learning systems. For the latter one, we'll look at the most popular implementations, including Distributed Ensemble Learning, Parallel Synchronous SGD and Parameter Servers.
+This section first shows some generic implementations for distributed systems because these are used as the foundation for distributed Machine Learning systems. For the latter one, the most popular implementations are described, including Distributed Ensemble Learning, Parallel Synchronous SGD and Parameter Servers.
 
 \input{./Generic_implementations.tex}
 \input{./sections/domain_specific_implementations.tex}
