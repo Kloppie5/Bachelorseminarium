@@ -5,78 +5,78 @@ We answered in this paper the following research question:\\
 	\item \textit{We ask this very broad question to assess to entire topic of Distributed Machine Learning, as required by the course.}
 	\item Why do we want or need Distributed Machine Learning opposed to (centralized) Machine Learning?
 	\begin{itemize}
-		\item \textit{We ask this question to motivate the need to use Distributed Machine Learning. Machine Learning is already well on its way and with this question we’ll research if it’s actually needed to distribute this machine learning.}
-		\item Which alternatives exist to distributed machine learning?
+		\item \textit{We ask this question to motivate the need to use Distributed Machine Learning. Machine Learning is already practiced widely, and through this question we will research if it is actually necessary to distribute this machine learning.}
+		\item Which alternatives exist to Distributed Machine Learning?
 		\begin{itemize}
-			\item \textit{We ask this question to discover if there are any alternatives to Distributed Machine Learning that we need to take into account. If there are none and the answer to the former question (do we need Distributed Machine Learning) is true, then we need only have to focus on Distributed Machine Learning. If not, then we’ll recommend to which extent Distributed Machine Learning should be researched, also based on the result of the next subquestion:}
+			\item \textit{We ask this question to discover if there are any alternatives to Distributed Machine Learning that we need to take into account. If there are none and the answer to the former question (do we need Distributed Machine Learning) is true, we only need to focus on Distributed Machine Learning. If not, we will recommend to which extent Distributed Machine Learning should be applied, in part based on the result of the next subquestion:}
 			\item How likely are they to remain sufficient for emerging applications?
 			\begin{itemize}
-				\item \textit{We ask this question to assess whether the alternatives to Distributed Machine Learning remain sufficient in the future. If not, then that might guide us to focus research efforts on Distributed Machine Learning, which should be able to remain sufficient for emerging application, as will be answered in Why we want / need Distributed Machine Learning.}
+				\item \textit{We ask this question to assess whether the alternatives to Distributed Machine Learning will remain sufficient in the future. If not, that might guide us to focus research efforts on Distributed Machine Learning, which should be able to remain sufficient for emerging application, as will be answered in Why we want / need Distributed Machine Learning.}
 			\end{itemize}
 		\end{itemize}
 	\end{itemize}
 	\item What technology is used for Distributed Machine Learning?
 	\begin{itemize}
-		\item \textit{We ask this question to get an understanding of how Distributed Machine Learning works and what the differences in its implementations are. We ask the question because, when researchers want to propose new and better methods for Distributed Machine Learning, they have to know first about how the current methods work, or at least have an overview of the current methods and references that provide a more thorough explanation.}
-		\item What algorithms and with which parameters are used to perform the actual machine learning?
+		\item \textit{We ask this question to gain an understanding of how Distributed Machine Learning works, and what the differences in its implementations are. When researchers want to propose new and better methods for Distributed Machine Learning, they have to know first about how the current methods work, or at least have an overview of the current methods and references that provide a more thorough explanation.}
+		\item What algorithms (and with which parameters) are used to perform the actual machine learning?
 		\begin{itemize}
-			\item \textit{We ask this question to learn how the current state-of-the-art Machine Learning algorithms compute their output in combination with their parameters. This is important, because, as we’ll explain in this section, it is desirable to being able to distribute existing Machine Learning algorithms.}
+			\item \textit{We ask this question to learn how the current state-of-the-art Machine Learning algorithms compute their output from their input and parameters. This is important, because, as we’ll explain in this section, it is desirable to be able to distribute existing Machine Learning algorithms.}
 			\item What algorithms are used to find the best parameters for the algorithms?
 			\begin{itemize}
-				\item \textit{We ask this question because bare Machine Learning algorithms are generally pretty useless without good parameters. Therefore we want to find methods to optimize the parameters to (hopefully) their optimal value.}
+				\item \textit{We ask this question because bare Machine Learning algorithms are nearly useless without good parameters. Therefore, we want to find methods that approximate or (hopefully) find optimal parameter values.}
 			\end{itemize}
 			\item What algorithms are used to perform the machine learning?
 			\begin{itemize}
-				\item \textit{We ask this question to learn how the current state-of-the-art Machine Learning algorithms work. This is important, because, as we’ll explain in the parent question of this question, it is desirable to being able to distribute existing Machine Learning algorithms.}
+				\item \textit{We ask this question to learn how the current state-of-the-art Machine Learning algorithms work. This is important, because, as we’ll explain in the parent question, it is desirable to being able to distribute existing Machine Learning algorithms.}
 			\end{itemize}
 		\end{itemize}
 		\item How can we partition and distribute these algorithms across a wide variety of hardware?
 		\begin{itemize}
-			\item \textit{We ask this question because, without this question, is essentially about non-distributed Machine Learning algorithms as opposed to Distributed Machine Learning algorithms. We want to know how to partition and distribute the Machine Learning algorithms to accommodate the answer to the question Why do we want / need Machine Learning (which will, as it will explain in the paper, motivate the need for Distributed Machine Learning).}
-			\item What is the tradeoff between computation time VS communication VS accuracy?
+			\item \textit{We ask this question because, without this question, this paper would essentially be about non-distributed Machine Learning algorithms (as opposed to Distributed Machine Learning algorithms). We want to know how to partition and distribute the Machine Learning algorithms to accommodate the answer to the question Why do we want / need Machine Learning (which will, as will be explained in the paper, motivate the need for Distributed Machine Learning).}
+			\item What is the trade-off between computation time, communication, and accuracy?
 			\begin{itemize}
-				\item \textit{We ask this question because you cannot perform well on all 3 of these, as will be explained in the paper. Therefore we want to research where the sweet spot is. This is important, because the sweet spot can be defined as the ultimate combination between these 3 factors, which provides us with an optimal result.}
+				\item \textit{We ask this question because you cannot perform well on all 3 of these, as will be explained in the paper. Therefore, we want to research where the sweet spot is. This is important, because the sweet spot can be defined as the ultimate combination between these 3 factors, which provides us with an optimal result.}
 			\end{itemize}
 			\item How to schedule and balance the workloads?
 			\begin{itemize}
-				\item \textit{We ask this question, because we want to know when and where to execute which code to get a good distributed performance.}
+				\item \textit{We ask this question because we want to know when and where to execute what code, in order to achieve acceptable distributed performance.}
 			\end{itemize}
 			\item How to bridge computation and communication?
 			\begin{itemize}
-				\item \textit{We ask this question because Distributed Machine Learning algorithms need to communicate to get a common answer. Therefore we want to research how to interleave parallel program computations and inter-worker communication to being able to get insight in how to optimize the distributed workloads.}
+				\item \textit{We ask this question because Distributed Machine Learning algorithms need to communicate in order to agree on a common answer. Therefore, we want to research how to interleave parallel program computations and inter-worker communication, and gain insight on how to optimize distributed workloads.}
 			\end{itemize}
 			\item What strategies can be used to optimize communication overhead?
 			\begin{itemize}
-				\item \textit{We ask this question because communication is generally very slow. Therefore we want to research which techniques exist to improve the performance regarding communication.}
+				\item \textit{We ask this question because communication is generally very slow. Therefore, we want to research which techniques exist to improve performance in regard to communication.}
 			\end{itemize}
 			\item What network topologies exist to partition the computing cluster?
 			\begin{itemize}
-				\item \textit{We ask this question because there are many ways to partition the machines within the computing clusters regarding the destination of the outgoing network packets from the machines. We want to know when to use which of these network topologies to get optimal performance.}
+				\item \textit{We ask this question because there are many ways to partition machines within computing clusters in regard to the destination of outgoing network packets from machines. We want to know when to use which of these network topologies for optimal performance.}
 			\end{itemize}
 		\end{itemize}
 	\end{itemize}
 	\item What are the currently used implementations?
 	\begin{itemize}
-		\item \textit{We ask this question because the former sections only gave an abstract overview of techniques that are used in current implementations, but to contribute to the field it is also very important to improve existing implementations. To do that we want to get an overview of which implementations currently exist and how they compare to each other.}
-		\item Which implementations make use of generic distributed systems frameworks? (Hadoop, Spark, GraphLab, zookeeper, etc.)
+		\item \textit{We ask this question because the former sections only gave an abstract overview of techniques that are used in current implementations. To contribute to the field, however, it is also important to improve existing implementations. To enable this, we want to get an overview of currently existing implementations and how they compare against each other.}
+		\item Which implementations make use of generic distributed systems frameworks? (Hadoop, Spark, GraphLab, etc.)
 		\item Which domain-specific implementations exist? (Tensorflow, MXNet, CNTK, etc.)
 		\begin{itemize}
 			\item \textit{We ask this question because most domain-specific implementations distinguish themselves from more generic systems quite obviously. There’s optimizations that only make sense when exploiting the unique properties of e.g. a neural network, and design considerations that are easier to make with known requirements on communication and computation.}
 		\end{itemize}
 		\item What are the current challenges with these implementations?
 		\begin{itemize}
-			\item \textit{We ask this question because there are bound to be areas of improvement in each of the aforementioned systems. Whether this is because of unsolved problems, or because all existing systems make severe tradeoffs, it is interesting to see which areas of focus could be considered when developing a new framework.}
+			\item \textit{We ask this question because there are bound to be areas of improvement in each of the aforementioned systems. Whether this is because of unsolved problems, or because all existing systems make severe trade-offs, it is interesting to see which areas of focus could be considered when developing a new framework.}
 			\item Performance challenges?
 			\begin{itemize}
-				\item \textit{We ask this question because it is, in the end, all about performance, otherwise we would not need to use Distributed Machine Learning. If it is very hard to get a good performance with these implementations, than Distributed Machine Learning with the current implementations does not offer a good solution to the problems it’s meant to solve.}
+				\item \textit{We ask this question because performance is a core motivation for the use of Distributed Machine Learning. If it is very hard to achieve high performance with existing implementations, they do not offer a solution to the problems they mean to solve.}
 			\end{itemize}
 			\item Fault-tolerance challenges?
 			\begin{itemize}
-				\item \textit{The more distributed the Machine Learning is, the bigger the chance that a node fails. We want to know by answering this question what the impact of a node failure or too-slow communication is on the learning of the data.}
+				\item \textit{The larger a cluster used for Distributed Machine Learning is, the higher the probability of node failure. We want to know, by answering this question, what the impact of a node failure or slow communication is on the training process.}
 			\end{itemize}
 			\item Privacy challenges?
 			\begin{itemize}
-				\item \textit{We ask this question because possible sensitive data of users is communicated a lot between many different machines in case of Distributed Machine Learning. Based on patterns in the communication streams sensitive data may leak and therefore we want to assess what the risks and consequences of this is and how we can prevent it from happening.}
+				\item \textit{We ask this question because possible sensitive data of users is frequently communicated between many different machines in a distributed system. Through patterns in the communication streams, sensitive data may leak unintentionally. We therefore want to assess what the risks and consequences of this are, and how we can prevent it from happening.}
 			\end{itemize}
 		\end{itemize}
 	\end{itemize}
