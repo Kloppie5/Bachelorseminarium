@@ -28,16 +28,21 @@ This system exploits three unique properties of Distributed Machine Learning: er
 Our goals include (1) to list regular Machine Learning algorithms that are commonly used in a distributed setting; (2) to find algorithms to determine the best parameters for the aforementioned algorithms; (3) to find a balance between computation time, communication overhead, and accuracy; and (4) to minimize the number of bits sent over the network, so that the system is not bottlenecked by network bandwidth.\\
 Designing a generic system that enables distribution of  regular Machine Learning efficiently is challenging, because every algorithm has its own communication patterns \cite{Jia14}\cite{Newman09}\cite{Rich13}\cite{Smola10}\cite{Takac13}\cite{Tsi12}.
 
-\subsubsection{Machine Learning algorithms}
-Machine Learning algorithms learn to make predictions or decisions based on data. Every Machine Learning algorithm has its own pros and cons. Machine Learning algorithms can be divided into categories based on some of their characteristics:
+\subsubsection{Machine Learning algorithms / parameter optimization}
+Machine Learning algorithms learn to make predictions or decisions based on data. Every Machine Learning algorithm has its own pros and cons. These can be divided into categories based on some of their characteristics:
 \begin{itemize}
 	\item \textbf{Feedback}, the type of feedback that is given to the algorithm while learning
 	\item \textbf{Goal}, the type of output that is generated
 	\item \textbf{Type}, the architecture used to generate output
 	\item \textbf{Method}, the nature of model evolution that occurs when given feedback
+	\item \textbf{Ensemble Methods}, the combination of algorithms to improve the accuracy
 \end{itemize}
+We'll first look at the ML algorithms themselves and then at other algorithms that optimize the parameters of these ML algorithms.
 
-\paragraph{Feedback}
+\paragraph{Machine Learning categories}
+\subparagraph{ML category: Feedback}
+.\\
+To train an algorithm, it has to get feedback so that the algorithm can improve. There are several different types of feedback:
 \begin{itemize}
 	\item \textbf{Supervised}
 		learning uses training data that consists of input objects (usually vectors) and output values. Supervised learning algorithms typically attempt to find a function that maps input data to some output. They then apply this function to find outputs for unknown input data.
@@ -54,7 +59,9 @@ Machine Learning algorithms learn to make predictions or decisions based on data
 		% Q-learning
 \end{itemize}
 
-\paragraph{Goals}
+\subparagraph{ML category: Goals}
+.\\
+ML algorithms can be used for a wide variety of purposes, for example classifying an image or predicting the probability of an event. They are often used for the following goals:
 \begin{itemize}
 	\item \textbf{Anomaly detection}
 		can be divided into 3 categories. \textbf{Supervised anomaly detection} requires data that has a different label for abnormal data, on which it trains a classifier. \textbf{Unsupervised anomaly detection} assumes that normal and abnormal data points are separable, and clusters them. \textbf{Semi-supervised anomaly detection} builds a model of normal data, and tests whether new data points are normal or abnormal. Which of these categories is best depends on dataset characteristics.
@@ -73,7 +80,9 @@ Machine Learning algorithms learn to make predictions or decisions based on data
 		is the problem of estimating how dependent variables relate to their dependencies. Parametric regression attempts to encode this in parameters of some function, which speeds up the process if, for example, a linear correlation is expected. Nonparametric regression constructs a predictor according to information derived from the data. It does this without relying on a predetermined form. This requires a larger sample size and significantly more time.
 \end{itemize}
 
-\paragraph{Types}
+\subparagraph{ML category: Types}
+.\\
+Every effective ML algorithm needs some kind of a "structure" that allows the algorithm to change its parameters so that it can learn new things. Many ML algorithms have the same type, but differ on smaller things. In this section 4 commonly used over-arching types of ML algorithms are presented, namely:
 \begin{itemize}
 	\item \textbf{Evolutionary algorithms (EAs)} (and 
 		specifically \textbf{Genetic algorithms}) learn iteratively based on evolution. The algorithm that actually solves the problem is represented by a set of properties, called its \textbf{genotype}. The performance of the algorithm is measured using a score, calculated using a \textbf{fitness function}. After calculating the fitness score of all generated algorithms, the next iteration creates new genotypes based on mutation and crossover of algorithms that are produce more accurate estimates. Generic algorithms can be used to create other algorithms, such as neural networks, belief networks, decision trees, and rule sets.
@@ -86,7 +95,9 @@ Machine Learning algorithms learn to make predictions or decisions based on data
 		are statistical models for finding and mapping semantic structures in text.
 \end{itemize}
 
-\paragraph{Methods}
+\subparagraph{ML category: Methods}
+.\\
+In this section an overview of commonly used methods to perform the Machine Learning is presented. These can be considered as children of the Machine Learning types as listed in the section above.
 \begin{itemize}
 	\item \textbf{Association rule learning}
 		is a \textit{rule-based machine learning} method that focuses on finding relations between different variables in datasets. Example relatedness metrics are \textbf{Support} (how often variables appear together), \textbf{Confidence} (how often a causal rule is true) and \textbf{Collective Strength} (inverse likelihood of the current data distribution if a given rule does not exist).
@@ -94,6 +105,14 @@ Machine Learning algorithms learn to make predictions or decisions based on data
 		are perceptron-based systems that consist of multiple layers. These layers are usually divided into an input layer, an output layer, and one or more hidden layers. Each layer consists of nodes connected to the previous and next layers through edges with associated weights (usually called synapses). Unlike "normal" perceptrons, these nodes usually apply an activation function on the output to allow for non-linearities.\\
 		The algorithm is defined by the state of the entire network, and can be changed by altering (1) the weights of the synapses, (2) the layout of the network, or (3) the activation function of nodes.\\
 		Because neural networks require a large number of nodes, the understandability of a neural network's "thought process" is lower compared to e.g. decision trees.\\
+		Neural networks are trained in many different ways, such as by using genetic algorithms. The most common approach, especially when talking about Deep neural networks, is using a process called \textbf{back-propagation};
+		\begin{enumerate}
+			\item Present a training sample
+			\item Calculate the error in each output neuron (the difference between expected and actual output).
+			\item Calculate the gradient
+			\item For every layer, adjust the weights and biases based on the gradient
+			\item Repeat
+		\end{enumerate}
 		Neural networks are extensively studied because of their ability to analyze enormous sets of data. They can be categorized into several subgroups based on network layout:
 		\begin{itemize}
 			\item \textbf{Recurrent neural networks (RNNs)}
@@ -119,14 +138,6 @@ Machine Learning algorithms learn to make predictions or decisions based on data
 				make use of stochastic transfer functions or weights, which allows them to escape local minima. 
 			% 		boltzmann machine
 		\end{itemize}
-		Neural networks are trained in many different ways, such as by using genetic algorithms. The most common approach, especially when talking about Deep neural networks, is using a process called \textbf{backpropagation};
-		\begin{itemize}
-			\item Present a training sample
-			\item Calculate the error in each output neuron (the difference between expected and actual output).
-			\item Calculate the gradient
-			\item For every layer, adjust the weights and biases based on the gradient
-			\item Repeat
-		\end{itemize}
 	\item \textbf{Auto-encoders}
 		are a type of neural network that trained specifically to encode and decode data. Because auto-encoders are trained to perform decoding separately from encoding, the encoded version of the data can be seen as a dimensional reduction of the data.
 	\item \textbf{Bayesian networks}, 
@@ -150,6 +161,8 @@ Machine Learning algorithms learn to make predictions or decisions based on data
 		Having a lot of dimensions decreases the accuracy of classifying new data points, so increasingly large datasets are needed to make the algorithms perform well.
 \end{itemize}
 
+\subparagraph{ML category: Ensemble Methods}
+.\\
 Usually, a single algorithm isn't accurate enough to solve a problem. Because of that, multiple algorithms are sometimes combined in so-called \textbf{Ensemble Learning}. There are many different ways to do this, such as:
 
 \begin{itemize}
@@ -164,16 +177,8 @@ Usually, a single algorithm isn't accurate enough to solve a problem. Because of
 	\item \textbf{Stacking}
 		is when multiple classifiers are trained on the dataset, and one new classifier uses the output of the other classifiers as input in an attempt to reduce the variance.
 	\item \textbf{Learning Classifier Systems (LCSs)}
-		(not to be confused with the more common usage of the LCS initialism, Longest Common Subsequence) is a modular system of learning approaches. An LCS iterates over data points from the dataset, completing the entire learning process in each iteration. The main idea is that an LCS has a limited number of rules. A Genetic Algorithm forces suboptimal rules out of the rule set. There are many different attributes that can drastically change the performance of an LCS depending on the dataset, including:
-		\begin{itemize}
-			\item Michigan-style architecture vs Pittsburgh-style architecture
-			\item supervised vs reinforcement
-			\item incremental vs batch
-			\item online vs offline
-			\item strength-based vs accuracy-based
-			\item complete mapping vs best mapping
-		\end{itemize}
-		Because of the increasing complexity of training an LCS with respect to  data size, it is the most commonly used implementation.
+		(not to be confused with the more common usage of the LCS initialism, Longest Common Subsequence) is a modular system of learning approaches. An LCS iterates over data points from the dataset, completing the entire learning process in each iteration. The main idea is that an LCS has a limited number of rules. A Genetic Algorithm forces suboptimal rules out of the rule set. There are many different attributes that can drastically change the performance of an LCS depending on the dataset, including the Michigan-style vs Pittsburgh-style architecture \cite{Puig09}, supervised vs reinforcement learning \cite{kaelbling1996reinforcement}, incremental vs batch learning \cite{clearwater1989incremental}, online vs offline training, strength-based vs accuracy-based \cite{wilson1995classifier} or complete mapping vs best mapping.\\		
+		Because of the increasing complexity of training an LCS with respect to its data size, it is the most commonly used implementation.
 \end{itemize}
 
 
@@ -185,25 +190,14 @@ Usually, a single algorithm isn't accurate enough to solve a problem. Because of
 %Singular value decomposition (SVD) and principal component analysis (PCA)
 
 
-\paragraph{Algorithms to find best parameters}
-To find the parameters for these algorithms, several Machine Learning workhorse implementations can be used that can be re-used across different Machine Learning algorithm-families. These include:
+\paragraph{Parameter optimization}
+To find the best parameters for these algorithms, several Machine Learning workhorse implementations can be used that can be re-used across different Machine Learning algorithm-families. These include:
 \begin{itemize}
-	\item First-order techniques
-	\begin{itemize}
-		\item Stochastic gradient descent
-% 			Backpropagation
-		\item Stochastic dual coordinate ascent\cite{Shal13}
-		\item L-BFGS
-		\item Conjugate gradient
-	\end{itemize}
-	\item Second-order techniques
-	\begin{itemize}
-		\item Newton descent
-		\item Quasi-Newton descent
-	\end{itemize}
-	\item Coordinate descent
-	\item Markov-Chain Monte-Carlo
-	\item Variational inference
+	\item First-order techniques such as stochastic gradient descent, stochastic dual coordinate ascent\cite{Shal13}, L-BFGS or conjugate gradient
+	\item Second-order techniques such as Newton descent (which requires computing the Hessian which is generally infeasible) or Quasi-Newton descent (which approximates Newton descent)
+	\item Coordinate descent, which minimizes along coordinate directions
+	\item Markov-Chain Monte-Carlo, which samples from a probability distribution
+	\item Variational inference\cite{Blei17}, which approximates probability densities through optimization
 \end{itemize}
 
 
@@ -211,7 +205,7 @@ To find the parameters for these algorithms, several Machine Learning workhorse 
 
 
 \subsubsection{Partitioning and distribution algorithms}
-This section contains an abstraction of the general design of a Distributed Machine Learning operating system that executes the Machine Learning workhorses across a wide variety of hardware.
+To execute the ML algorithms listed in the previous section of which the parameters are optimized also by the algorithms in the previous section, we can either execute them on a single computer (which is out of the scope of this paper) or in a distributed manner. There are several ways to partition the data and/or the program and to distribute these evenly across al machines.
 
 
 \paragraph{Computation time vs communication vs accuracy}
@@ -255,7 +249,7 @@ There are several communication management strategies\cite{Xing16} used to sprea
 There are several network topologies used for Distributed Machine Learning clusters:
 \begin{itemize}
 	\item \textbf{Trees} AllReduce\cite{Agar14} is an example of a tree-like network topology that provides straightforward parallelization of gradient-based optimization algorithms. It achieves this by accumulating local gradients to obtain a global gradient.\\
-	An advantage is that AllReduce is very fast and highly scalable. A disadvantage is that it only works for reduce operations (like in MapReduce).
+	An advantage is that AllReduce is very fast and highly scalable. A disadvantage is that it only works for reduce operations (like in MapReduce).\\
 	\begin{minipage}{\linewidth}
 		\centering
 		\includegraphics[scale=0.5]{AllReduce.png}
