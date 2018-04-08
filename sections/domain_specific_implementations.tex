@@ -98,7 +98,7 @@ The programming model that Petuum used is different to that of DistBelief in a m
 
 When developing a model using Petuum, developers have to implement a method named "push", which is responsible for each of the parallelized model training operations. Its implementation should pull the model state from the parameter server, run a training iteration, and push a gradient to the parameter server. Petuum by default manages the scheduling aspect and the parameter merging logic automatically, so that data-parallel models don’t require any additional operations. However, if model-parallelism is desired, the schedule method (which tells each of the parallel workers what parameters they need to train) and the pull method (which defines the aggregation logic for each of the generated parameter gradients) need to be implemented as well.
 
-Petuum provides an abstraction layer that also allows it to run on systems using YARN and HDFS, which simplifies compatibility with pre-existing clusters. 
+Petuum provides an abstraction layer that also allows it to run on systems using YARN (the Hadoop job scheduler) and HDFS (the Hadoop file system), which simplifies compatibility with pre-existing clusters. 
 
 
 \paragraph{Parallel hybrid-synchronous SGD}

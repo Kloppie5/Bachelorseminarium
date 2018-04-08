@@ -1,5 +1,5 @@
 \section{Literature Review}
-In this section the following (sub-)research questions are answered to get an overview of the current state-of-the-art of Distributed Machine Learning:
+In this section, the following (sub-)research questions are answered to get an overview of the current state-of-the-art of Distributed Machine Learning:
 \begin{itemize}
 	\item What are the advantages of Distributed Machine Learning over (centralized) Machine Learning?
 	\item What technology is used for Distributed Machine Learning?
@@ -7,23 +7,23 @@ In this section the following (sub-)research questions are answered to get an ov
 \end{itemize}
 
 \subsection{The need for Distributed Machine Learning}
-.\input{alternatives}
+Large amounts of data are being gathered for many different use cases, some of which involve Machine Learning. The algorithms for this tend to be resource-intensive, and at a certain point, executing them on a single general-purpose machine is no longer feasible.
+Instead, it can be beneficial to distribute the Machine Learning over a cluster of machines. This enables large-scale parallelized training and prediction, which often has the effect of reducing the wall clock time the entire process takes. While limited by Amdahl's law\cite{hill2008amdahl}, the speedup can, dependent on architecture, attain a near-linear correlation with the number of processors (i.e. machines) involved. Since large computing clusters are already commonplace for general Big Data Processing, reusing (parts of) those same systems to accelerate Machine Learning is highly appealing.
 
-
-
-
-
-
+\input{alternatives}
 
 
 
 \subsection{Underlying technology}
 To give you an overview of how Distributed Machine Learning works, we'll give you an abstract framework that includes everything a real implementation should include, see Figure \ref{overview_system}.\\
 \begin{figure}[H]
-	\includegraphics[width=\textwidth]{general_system_bac_sem.png}
-	\caption{An overview of the algorithms that make up our general system for Distributed Machine Learning}
-	\label{overview_system}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{general_system_bac_sem.png}
+		\caption{An overview of the algorithms that make up our general system for Distributed Machine Learning}
+		\label{overview_system}
+	\end{center}
 \end{figure}
+\newpage
 This system exploits three unique properties of Distributed Machine Learning: error tolerance, dynamic structural dependencies, and non-uniform convergence.\cite{Xing16}\\
 Our goals include (1) to list regular Machine Learning algorithms that are commonly used in a distributed setting; (2) to find algorithms to determine the best parameters for the aforementioned algorithms; (3) to find a balance between computation time, communication overhead, and accuracy; and (4) to minimize the number of bits sent over the network, so that the system is not bottlenecked by network bandwidth.\\
 Designing a generic system that enables distribution of  regular Machine Learning efficiently is challenging, because every algorithm has its own communication patterns \cite{Jia14}\cite{Newman09}\cite{Rich13}\cite{Smola10}\cite{Takac13}\cite{Tsi12}.
@@ -192,10 +192,10 @@ Usually, a single algorithm isn't accurate enough to solve a problem. Because of
 \paragraph{Parameter optimization}
 To find the best parameters for these algorithms, several Machine Learning workhorse implementations can be used that can be re-used across different Machine Learning algorithm-families. These include:
 \begin{itemize}
-	\item First-order techniques such as stochastic gradient descent, stochastic dual coordinate ascent\cite{Shal13}, L-BFGS or conjugate gradient
-	\item Second-order techniques such as Newton descent (which requires computing the Hessian which is generally infeasible) or Quasi-Newton descent (which approximates Newton descent)
-	\item Coordinate descent, which minimizes along coordinate directions
-	\item Markov-Chain Monte-Carlo, which samples from a probability distribution
+	\item First-order techniques such as stochastic gradient descent (SGD)\cite{bottou2010large}, stochastic dual coordinate ascent\cite{Shal13}, L-BFGS\cite{liu1989limited} or conjugate gradient methods\cite{hestenes1952methods}\cite{dai1999nonlinear}
+	\item Second-order techniques such as Newton descent\cite{polyak2007newton} (which requires computing the Hessian, and is therefore generally infeasible) or Quasi-Newton descent\cite{byrd2016stochastic} (which approximates Newton descent)
+	\item Coordinate descent\cite{wright2015coordinate}, which minimizes along coordinate directions
+	\item Markov-Chain Monte-Carlo\cite{brooks1998markov}, which samples from a probability distribution
 	\item Variational inference\cite{Blei17}, which approximates probability densities through optimization
 \end{itemize}
 
@@ -235,11 +235,11 @@ At the moment, ASP is the state-of-the-art method.
 To distribute Machine Learning algorithms, either the data or the model is partitioned across the machines. This is referred to respectively as data parallelism and model parallelism \cite{Die12}. These two methods can also be applied simultaneously\cite{Xing16}. Data parallelism partitions the data and assigns it to parallel machines. It can be used with every ML algorithm with an i.i.d. assumption over the data samples (i.e. most ML algorithms \cite{Xing16}). Model parallelism partitions the model parameters and assigns that to parallel machines. It cannot be applied to most ML algorithms, because the model parameters generally don't satisfy this i.i.d. assumption.\\
 There are several communication management strategies\cite{Xing16} used to spread and reduce the amount of data communicated between machines:
 \begin{itemize}
-	\item To prevent bursts of communication over the network (e.g. after a mapper is finished), continuous communication is used, such as in the state-of-the-art implementation Bösen\cite{Wei15}.
+	\item To prevent bursts of communication over the network (e.g. after a mapper is finished), continuous communication is used, such as in the state-of-the-art implementation B\"osen\cite{Wei15}.
 	
-	\item Neural networks are composed out of layers, the training of which (using the back-propagation gradient descent algorithm) is highly sequential. Because the top layers of neural networks contain the most parameters while accounting only for a small part of the total computation \cite{Xing16}, WFBP \cite{Zhang17} was proposed to spread the computation and communication out in an optimal fashion.
+	\item Neural networks are composed out of layers, the training of which (using the back-propagation gradient descent algorithm) is highly sequential. Because the top layers of neural networks contain the most parameters while accounting only for a small part of the total computation \cite{Xing16}, Wait-free Backpropagation (WFBP) \cite{Zhang17} was proposed to spread the computation and communication out in an optimal fashion.
 	
-	\item Because WBFP does not reduce the communication overhead, hybrid communication (HybComm) \cite{Zhang17} was proposed. Effectively, it combines Parameter Servers (PS)\cite{Wei15} with Sufficient Factor Broadcasting (SFB)\cite{Xie15} by being aware of both the mathematical property of neural networks and the structure of computing clusters. See below for more information about PS (under Centralized Storage) and SFB (under Decentralized Storage).
+	\item Because WFBP does not reduce the communication overhead, hybrid communication (HybComm) \cite{Zhang17} was proposed. Effectively, it combines Parameter Servers (PS)\cite{Wei15} with Sufficient Factor Broadcasting (SFB)\cite{Xie15} by being aware of both the mathematical property of neural networks and the structure of computing clusters. See below for more information about PS (under Centralized Storage) and SFB (under Decentralized Storage).
 	
 \end{itemize}
 
@@ -270,7 +270,7 @@ There are several network topologies used for Distributed Machine Learning clust
 
 
 \subsection{Currently used implementations}
-This section first shows some generic implementations for distributed systems. These are often used as the foundation for distributed Machine Learning systems. Additionally, several domain-specific implementations are available. For the latter one, the most popular implementations are described, including Distributed Ensemble Learning, Parallel Synchronous SGD, and Parameter Servers.
+This section first shows some generic implementations for distributed systems. These are often used as the foundation for distributed Machine Learning systems. Additionally, several domain-specific implementations are available. Of these, the most popular implementations are described, including Distributed Ensemble Learning, Parallel Synchronous Stochastic Gradient Descent (SGD), and Parameter Servers.
 
 \input{./Generic_implementations.tex}
 \input{./sections/domain_specific_implementations.tex}
@@ -282,7 +282,7 @@ These performance concerns are much less severe in the context of synchronous SG
 
 \paragraph{Fault tolerance}
 
-Synchronous AllReduce-based approaches seem to scale significantly better than the parameter server approach (up to a certain cluster size), but suffer from a lack of fault-tolerance: failure of a single machine blocks the entire training process. At smaller scales, this might still be a manageable problem. However, past a certain number of nodes the probability of any node being unavailable becomes high enough to result in near-continuous stalling. Common implementations of these HPC-inspired patterns, such as MPI and NCCL, lack fault-tolerance completely. Although there are efforts to counteract some of this, production-ready solutions are lacking. Some of the described implementations allow for checkpointing to counteract this, but a lot of work is necessary to enable true fault-tolerance, as is described in \citet{Amatya2017}. It is also possible to reduce the probability of failure for each individual node, but this requires very specific hardware that is expensive (e.g. highly stable datacenter cooling or Infiniband networks) and not generally available on commodity cloud platforms.
+Synchronous AllReduce-based approaches seem to scale significantly better than the parameter server approach (up to a certain cluster size), but suffer from a lack of fault-tolerance: failure of a single machine blocks the entire training process. At smaller scales, this might still be a manageable problem. However, past a certain number of nodes the probability of any node being unavailable becomes high enough to result in near-continuous stalling. Common implementations of these High-Performance Computing-inspired patterns, such as MPI and NCCL, lack fault-tolerance completely. Although there are efforts to counteract some of this, production-ready solutions are lacking. Some of the described implementations allow for checkpointing to counteract this, but a lot of work is necessary to enable true fault-tolerance, as is described in \citet{Amatya2017}. It is also possible to reduce the probability of failure for each individual node, but this requires very specific hardware that is expensive (e.g. highly stable datacenter cooling or Infiniband networks) and not generally available on commodity cloud platforms.
 Asynchronous implementations do not suffer from this problem as much. They are designed to explicitly tolerate straggling and failing nodes, with only minimal impact on training performance. The question for ML practitioners, then, is whether they prefer performance or fault tolerance, and whether they are constrained by either one. Hybrid approaches even offer a way to customize these characteristics, although they are not frequently found in use yet. It would be interesting to see whether an even better approach exists, or whether there is an efficient way to implement fault-tolerant AllReduce.
 
 \paragraph{Privacy}
