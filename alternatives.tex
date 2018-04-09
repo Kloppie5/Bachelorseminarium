@@ -5,13 +5,13 @@ learning is currently distributing the workload over a large amount of machines.
 
 \paragraph{Application Specific Integrated Circuits}
 The idea of using Application Specific Integrated Circuits (ASICs) in highly specialized tasks is not new to Machine Learning. In recent times, the demand for such chips has risen massively\cite{Metz18}.
-When applied to e.g. Bitcoin mining, ASICs have a significant competitive advantage over GPUs and CPUs, which achieve only a fraction of the performance per Watt. The expectations of ASICs are high in the context of Machine Learning as well, because many of the computations involved come in the form of matrix multiplications. This is an area in which some ASICs excel.
+When applied to e.g. Bitcoin mining, ASICs have a significant competitive advantage over GPUs and CPUs, which achieve only a fraction of the performance per watt. The expectations of ASICs are high in the context of Machine Learning as well, because many of the computations involved come in the form of matrix multiplications. This is an area in which some ASICs excel.
 
 Google applied this concept in their own Tensor Processing Unit (TPU)\cite{Sato17}, which, as the name suggests, is an ASIC that specializes in calculations that use tensors ($n$-dimensional arrays). The TPU works well when combined with their Tensorflow\cite{Tensorflow2015}\cite{Tensorflow2016} framework, which is one of the most popular building blocks for Machine Learning models.
 
 The most important component of the TPU is its Matrix Multiply unit, which is what differentiates the chip from a CPU/GPU. The TPU can be connected to a server over a PCI-e bus. Many TPUs can be used in a data center, and if the work load is high even for a TPU, multiple units can collaborate in a distributed setting.
 
-The performance improvement of the TPU over regular CPU/GPU setups is not only because of its increased processing power, but also its power efficiency, which is important for large companies that want to minimize energy costs. When running benchmarks, \citet{Joup17} found that the performance per Watt of a TPU can approach 200x that of a traditional system.
+The performance improvement of the TPU over regular CPU/GPU setups is not only because of its increased processing power, but also its power efficiency, which is important for large companies that want to minimize energy costs. When running benchmarks, \citet{Joup17} found that the performance per watt of a TPU can approach 200x that of a traditional system.
 
 Further benchmarking by \citet{Sato17} indicated that the total processing power of a TPU or GPU can be up to 70x higher than a CPU in a standard Neural Network, with performance improvements varying from 3.5x - 71x depending on the task at hand.
 
