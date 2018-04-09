@@ -29,7 +29,7 @@ This paper reviews the current state-of-the-art of Distributed Machine Learning.
 		\item \textbf{What are the current challenges with these implementations?}
 		\begin{itemize}
 			\item \textbf{What are the performance challenges?} In the past, companies have had to increase the number of machines quadratically to achieve a linear increase in performance. With state-of-the-art machine learning systems like Tensorflow, the scaling is still below 75\%, although synchronous SGD-based frameworks can achieve almost linear scaling at small cluster sizes.
-			\item \textbf{What are the fault-tolerance challenges?} At large cluster sizes, the probability of a single node failure is high. This has lead to HPC-inspired patterns, such as checkpointing. In practice, companies have to balance performance with fault tolerance, because no good hybrid approaches have been developed yet.
+			\item \textbf{What are the fault-tolerance challenges?} At large cluster sizes, the probability of a single node failure is high. This has lead to High-Performance Computing-inspired patterns, such as checkpointing. In practice, companies have to balance performance with fault tolerance, because no good hybrid approaches have been developed yet.
 			\item \textbf{What are the privacy challenges?} Taking political decision into account, some data is not allowed to move past country borders or even move at all. Distributed Ensemble Models, Parameter Server-based systems, and statistical noise offer improved privacy, but perfect privacy is not focused on by current frameworks.
 		\end{itemize}
 	\end{itemize}
