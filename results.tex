@@ -21,10 +21,10 @@ This section gives an overview of how Distributed Machine Learning works and pre
 		\label{overview_system}
 	\end{center}
 \end{figure}
-\newpage
 This system exploits three unique properties of Distributed Machine Learning: error tolerance, dynamic structural dependencies, and non-uniform convergence.\cite{Xing16}\\
 Our goals include (1) to list regular Machine Learning algorithms that are commonly used in a distributed setting; (2) to find algorithms to determine the best parameters for the aforementioned algorithms; (3) to find a balance between computation time, communication overhead, and accuracy; and (4) to minimize the number of bits sent over the network, so that the system is not bottlenecked by network bandwidth.\\
 Designing a generic system that enables distribution of  regular Machine Learning efficiently is challenging, because every algorithm has its own communication patterns \cite{Jia14}\cite{Newman09}\cite{Rich13}\cite{Smola10}\cite{Takac13}\cite{Tsi12}.
+\newpage
 
 \subsubsection{Machine Learning algorithms / parameter optimization}
 Machine Learning algorithms learn to make predictions or decisions based on data. Every Machine Learning algorithm has its own pros and cons. The algorithms can be divided into categories based on some of their characteristics:
@@ -194,7 +194,7 @@ To find the best parameters for these algorithms, several Machine Learning workh
 
 % --------
 
-
+\newpage
 \subsubsection{Partitioning and distribution algorithms}
 To execute the ML algorithms listed in the previous section, of which the parameters are optimized by ML workhorses discussed (such as first-order / second-order techniques), we can either execute them on a single computer (which is out of the scope of this paper) or in a distributed manner. There are several ways to partition the data and/or the program and to distribute these evenly across all machines.
 
@@ -261,7 +261,7 @@ The last consideration for the design of a Distributed Machine Learning cluster 
 
 
 
-
+\newpage
 \subsection{Currently used implementations}
 This section first shows some generic implementations for distributed systems. These are often used as the foundation for distributed Machine Learning systems. Additionally, several domain-specific implementations are available. Of these, the most popular ones are described, including Distributed Ensemble Learning, Parallel Synchronous Stochastic Gradient Descent (SGD), and Parameter Servers.
 
