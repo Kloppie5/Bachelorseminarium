@@ -2,9 +2,25 @@
 Distributed system already exist for companies possessing massive amounts of data that they want to be able to query and analyze. These frameworks largely rely on multiple commodity servers, each of them with a relatively small storage capacity and computing power, rather than one expensive large server. This strategy has proven more affordable, as long as sufficient fault tolerance is built into the software.
 
 \paragraph{The frameworks}
-The storage layer of existing frameworks is commonly based on the \textit{Google File System (GFS)}\cite{Ghem03}. GFS is owned by and used within Google to handle all Big Data storage needs within the company. GFS splits the data that is uploaded to the cluster up into chunks, which are then distributed over the "chunk servers" in the node. The chunks are replicated a predefined number of times (usually 3) in order to protect against data loss on server failure. The data on the chunk servers can then be accessed by a user through contacting the master, which knows exactly on which servers each chunk is stored.\cite{Ghem03} %TODO: The data- and workflow is described in Figure \ref{GFS_Architecture} below.
+The storage layer of existing frameworks is commonly based on the \textit{Google File System (GFS)}\cite{Ghem03}. GFS is owned by and used within Google to handle all Big Data storage needs within the company. GFS splits the data that is uploaded to the cluster up into chunks, which are then distributed over the "chunk servers" in the node. The chunks are replicated a predefined number of times (usually 3) in order to protect against data loss on server failure. The data on the chunk servers can then be accessed by a user through contacting the master, which knows exactly on which servers each chunk is stored.\cite{Ghem03} The data and work-flow is described in Figure \ref{GFS_Architecture} below.
 
-The GFS architecture as first described by \citep{Ghem03} was adopted by an open-source framework called Hadoop \cite{Shv10}. Hadoop was developed mainly by Yahoo!, and is now distributed and maintained as an Apache project. Its storage layer, named Hadoop File System or HDFS, functions essentially the same as GFS. There are only minor differences with GFS, such as the naming of certain subsystems and the chunk size. %TODO: A typical flow of adding a file to HDFS is show in Figure \ref{Hadoop_usecase} below.
+\begin{figure}
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{GFS.png}
+	\caption{Google File System architecture}%\cite{Ghem03}
+	\label{GFS_Architecture}
+	\end{center}
+\end{figure}
+
+The GFS architecture as first described by \citep{Ghem03} was adopted by an open-source framework called Hadoop \cite{Shv10}. Hadoop was developed mainly by Yahoo!, and is now distributed and maintained as an Apache project. Its storage layer, named Hadoop File System or HDFS, functions essentially the same as GFS. There are only minor differences with GFS, such as the naming of certain subsystems and the chunk size. A typical use case of adding a file to the Hadoop File System (HDFS) is show in Figure \ref{Hadoop_usecase} below. \ref{Hadoop_usecase} below.
+
+\begin{figure}
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{HDFS.png}
+	\caption{The data flow when adding a file to the HDFS}%\cite{Shv10}
+	\label{Hadoop_usecase}
+	\end{center}
+\end{figure}
 
 \paragraph{Uses of the frameworks}
 The storage architecture highlighted above is the most common one empowering Big Data frameworks today. Popular examples of these are MapReduce and the Apache Spark engine.
