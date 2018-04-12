@@ -38,7 +38,7 @@ We will first look at the ML algorithms themselves, then at ensembling methods t
 
 \paragraph{Machine Learning categories}
 \subparagraph{ML category: Feedback}\mbox{}\\
-To train an algorithm, it has to get feedback so that it can improve. There are several different types of feedback:
+To train an algorithm, it has to get feedback so that it can improve. There are several different types of feedback:\cite{DBLP:journals/corr/YogatamaBDGL16}
 \begin{itemize}
 	\item \textbf{Supervised}
 		learning uses training data that consists of input objects (usually vectors) and output values. Supervised learning algorithms typically attempt to find a function that maps input data to some output. They then apply this function to find outputs for unknown input data.
@@ -56,7 +56,7 @@ To train an algorithm, it has to get feedback so that it can improve. There are 
 \end{itemize}
 
 \subparagraph{ML category: Goals}\mbox{}\\
-ML algorithms can be used for a wide variety of purposes, such as classifying an image or predicting the probability of an event. They are often used for the following goals:
+ML algorithms can be used for a wide variety of purposes, such as classifying an image or predicting the probability of an event. They are often used for the following goals: \cite{Kwon2017}
 \begin{itemize}
 	\item \textbf{Anomaly detection}
 		can be divided into 3 categories. \textbf{Supervised anomaly detection} requires data that has a different label for abnormal data, on which it trains a classifier. \textbf{Unsupervised anomaly detection} assumes that normal and abnormal data points are separable, and clusters them. \textbf{Semi-supervised anomaly detection} builds a model of normal data, and tests whether new data points are normal or abnormal. Which of these categories is best depends on dataset characteristics.
@@ -78,10 +78,10 @@ ML algorithms can be used for a wide variety of purposes, such as classifying an
 \subparagraph{ML category: Types}\mbox{}\\
 Every effective ML algorithm needs some kind of "structure" that allows the algorithm to change its parameters so that it can learn new things. Many ML algorithms have the same type, but differ on smaller elements. In this section 4 commonly used overarching types of ML algorithms are presented, namely:
 \begin{itemize}
-	\item \textbf{Evolutionary algorithms (EAs)} (and 
+	\item \textbf{Evolutionary algorithms (EAs)\cite{GONG2015286} (and 
 		specifically \textbf{Genetic algorithms}) learn iteratively based on evolution. The algorithm that actually solves the problem is represented by a set of properties, called its \textbf{genotype}. The performance of the algorithm is measured using a score, calculated using a \textbf{fitness function}. After calculating the fitness score of all generated algorithms, the next iteration creates new genotypes based on mutation and crossover of algorithms that are produce more accurate estimates. Generic algorithms can be used to create other algorithms, such as neural networks, belief networks, decision trees, and rule sets.
 	% Graphical models
-	\item \textbf{Perceptron-based}
+	\item \textbf{Perceptron-based\cite{narudin2016evaluation}}
 		algorithms use binary classifiers (Perceptrons) that label input vectors as 'active' or 'inactive'. Perceptrons assign a weight to all inputs. It then sum over the products of these weights and their input. The outcome of this is compared to a threshold (known as the \textbf{bias}) to determine the label. Perceptron-based algorithms commonly use the entire batch of training data to try to find an instance that will work for the entire set. They are binary, and therefore primarily used for binary or multi-label classification.
 	\item \textbf{Rule-based machine learning (RBML)}
 		algorithms use a set of rules that each represent a small part of the problem. These rules usually express a condition, as well as a value for when that condition is met. Because of the clear if-then relation, rules lend themselves to simple interpretation compared to more abstract types of ML algorithms, such as neural networks.
@@ -90,7 +90,7 @@ Every effective ML algorithm needs some kind of "structure" that allows the algo
 \end{itemize}
 
 \subparagraph{ML category: Methods}\mbox{}\\
-In this section, an overview of commonly used methods to perform the Machine Learning is presented. These can be considered as children of the Machine Learning types as listed in the section above.
+In this section, an overview of commonly used methods to perform the Machine Learning is presented. These can be considered as children of the Machine Learning types as listed in the section above.\cite{preeti2017review}
 \begin{itemize}
 	\item \textbf{Association rule learning}
 		is a \textit{rule-based machine learning} method that focuses on finding relations between different variables in datasets. Example relatedness metrics are \textbf{Support} (how often variables appear together), \textbf{Confidence} (how often a causal rule is true) and \textbf{Collective Strength} (inverse likelihood of the current data distribution if a given rule does not exist).
@@ -155,8 +155,7 @@ In this section, an overview of commonly used methods to perform the Machine Lea
 \end{itemize}
 
 \subparagraph{Combining ML algorithms: Ensemble Methods}\mbox{}\\
-Usually, a single algorithm is not accurate enough to solve a problem. Because of that, multiple algorithms are sometimes combined in so-called \textbf{Ensemble Learning}. There are many different ways to do this, such as:
-
+Usually, a single algorithm isn't accurate enough to solve a problem. Because of that, multiple algorithms are sometimes combined in so-called \textbf{Ensemble Learning}. There are many different ways to do this, such as:\cite{fernandez2014we}
 \begin{itemize}
 	\item \textbf{Bagging}
 		is the process of building multiple classifiers and combining them into one.
@@ -281,7 +280,7 @@ Asynchronous implementations do not suffer from this problem as much. They are d
 
 \paragraph{Privacy}
 
-There are scenarios in which it is beneficial or even mandatory to isolate different subsets of the training data from each other. The furthest extent of this is when a model needs to be trained on datasets that each live on different machines/clusters, and may under no circumstance be co-located or even moved.
+There are scenarios in which it is beneficial or even mandatory to isolate different subsets of the training data from each other.\cite{jordan2015machine} The furthest extent of this is when a model needs to be trained on datasets that each live on different machines/clusters, and may under no circumstance be co-located or even moved.
 One interesting approach to training models in a privacy-sensitive context is the use of a distributed ensemble model. This allows perfect separation of the training data subsets, with the drawback that a method needs to be found that properly balances each trained model's output for an unbiased result.
 Parameter server-based systems could also be useful in the context of privacy, as the training of a model can be separated from the training's result. However, this assumes that no sensitive properties of the underlying data leak into the model itself, which is not always easy to prove.
 Finally, it is possible to introduce statistical noise into each subset of the training data, with the intention of rendering its sensitive characteristics unidentifiable to other parties. \citet{Bal12} touches on this subject, but makes it clear that the amount privacy in this scenario is dependent on the amount of statistical queries required to learn the dataset. This puts an upper bound on usefulness of the model itself.
